@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Employee Leave Management System</title>
+      <link rel="stylesheet" href="../assets/css/bootstrap.css">
+      <script defer src="../assets/fontawesome/js/all.min.js"></script>
+      <link rel="stylesheet" href="../assets/vendors/chartjs/Chart.min.css">
+      <link rel="stylesheet" href="../assets/vendors/perfect-scrollbar/perfect-scrollbar.css">
+      <link rel="stylesheet" href="../assets/css/app.css">
+      <link rel="shortcut icon" href="../assets/images/favicon.svg" type="image/x-icon">
+      <link rel="stylesheet" href="../assets/css/custom.css">
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <link rel="stylesheet" href="daily.css">
+   </head>
+   <body>
+      <div id="app">
+        <div class="swipe-area" id="swipeArea"></div>
+         <div id="sidebar" class='' >
+         </div>
+         <div id="bottomNavigation"></div>
+         <div id="main">  
+             <div id="topBar"></div>          
+            <div class="main-content container-fluid">
+              <div class="page-title"style="display:flex">
+               
+              </div>
+              <section class="section">
+                <aside class="profile-card">
+                    <header>
+                        <p><b>Daily Login Card</b></p>
+                      <!-- here’s the avatar -->
+                      <a >
+                        <img src="../assets/images/user.png" class="hoverZoomLink">
+                      </a>
+                      <!-- the username -->
+                        <h1>
+                              Reetik
+                        </h1>
+                  
+                      <!-- and role or location -->
+                        <h2>
+                             Date - <span id="date"></span>
+                        </h2>
+                    </header>
+                  
+                    <!-- bit of a bio; who are you? -->
+                    <div class="profile-bio">
+                      <div class="btn-group" style="padding:20px;">
+                        <button type="button" class="btn btn-success" style="background:#4cc1bb "  onclick=authenticate()>Get In
+                          
+                        </button>
+
+                     
+                      </div>
+                  
+                    </div>
+                  
+                    <!-- some social links to show off -->
+                    <!-- <ul class="profile-social-links">
+                      <li>
+                        <a target="_blank" href="https://www.facebook.com/creativedonut">
+                          <i class="fa fa-facebook"></i>
+                        </a>
+                      </li>
+                      <li>
+                        <a target="_blank" href="https://twitter.com/dropyourbass">
+                          <i class="fa fa-twitter"></i>
+                        </a>
+                      </li>
+                      <li>
+                        <a target="_blank" href="https://github.com/vipulsaxena">
+                          <i class="fa fa-github"></i>
+                        </a>
+                      </li>
+                      <li>
+                        <a target="_blank" href="https://www.behance.net/vipulsaxena">
+                         
+                          <i class="fa fa-behance"></i>
+                        </a>
+                      </li>
+                    </ul> -->
+                  </aside>
+              </section>
+            </div>
+         </div>
+      </div>
+      <script src="../assets/js/feather-icons/feather.min.js"></script>
+      <script src="../assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+      <script src="../assets/js/app.js"></script>
+      <script src="../assets/vendors/chartjs/Chart.min.js"></script>
+      <script src="../assets/vendors/apexcharts/apexcharts.min.js"></script>
+      <!-- <script src="../assets/js/pages/dashboard.js"></script> -->
+      <script src="../assets/js/main.js"></script>
+      <script src="../assets/js/jq.min.js"></script>
+      <script type="text/javascript" src="../assets/js/jquery.touchSwipe.min.js"></script>
+      <script src="../cordova.js"></script>
+      <script src="../js/index.js"></script>
+      <script src="../assets/js/common.js"></script>
+      <!-- <script src="dailySignIn1.js"></script> -->
+   </body>
+</html>

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1045273444547",
+    "project_id": "l2mis-65255",
+    "storage_bucket": "l2mis-65255.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1045273444547:android:16ae53d1c2264e8b53a276",
+        "android_client_info": {
+          "package_name": "com.l2m.ems"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1045273444547-umrnnv940lskp0ro0qtusbkr89als77p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC1P5iwtkHjSEif0B74TB64BVJ5XlPJScY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1045273444547-umrnnv940lskp0ro0qtusbkr89als77p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
