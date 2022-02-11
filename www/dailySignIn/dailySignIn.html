@@ -3,22 +3,23 @@
    <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Employee Leave Management System</title>
+      <title>DSC</title>
       <link rel="stylesheet" href="../assets/css/bootstrap.css">
-      <script defer src="../assets/fontawesome/js/all.min.js"></script>
-      <link rel="stylesheet" href="../assets/vendors/chartjs/Chart.min.css">
-      <link rel="stylesheet" href="../assets/vendors/perfect-scrollbar/perfect-scrollbar.css">
+      <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+      />
       <link rel="stylesheet" href="../assets/css/app.css">
       <link rel="shortcut icon" href="../assets/images/favicon.svg" type="image/x-icon">
       <link rel="stylesheet" href="../assets/css/custom.css">
       <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
       <link rel="stylesheet" href="daily.css">
+
    </head>
    <body>
       <div id="app">
         <div class="swipe-area" id="swipeArea"></div>
-         <div id="sidebar" class='' >
-         </div>
+         <div id="sidebar" class=''></div>
          <div id="bottomNavigation"></div>
          <div id="main">  
              <div id="topBar"></div>          
@@ -32,10 +33,10 @@
                         <p><b>Daily Login Card</b></p>
                       <!-- here’s the avatar -->
                       <a >
-                        <img src="../assets/images/user.png" class="hoverZoomLink">
+                        <img src="../assets/images/user.png" style="width: 100px !important;height:100px !important; object-fit: cover !important;" id="img" class="hoverZoomLink">
                       </a>
                       <!-- the username -->
-                        <h1>
+                        <h1 id="name" >
                               Reetik
                         </h1>
                   
@@ -89,12 +90,17 @@
       <script src="../assets/js/feather-icons/feather.min.js"></script>
       <script src="../assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
       <script src="../assets/js/app.js"></script>
-      <script src="../assets/vendors/chartjs/Chart.min.js"></script>
-      <script src="../assets/vendors/apexcharts/apexcharts.min.js"></script>
       <!-- <script src="../assets/js/pages/dashboard.js"></script> -->
       <script src="../assets/js/main.js"></script>
       <script src="../assets/js/jq.min.js"></script>
       <script type="text/javascript" src="../assets/js/jquery.touchSwipe.min.js"></script>
+      <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-app-compat.js"></script>
+      <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-firestore-compat.js"></script>
+      <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-auth-compat.js"></script>
+      <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-storage-compat.js"></script>
+      <script src="./../assets/js/firebase.js"></script>
+      <script src="./../assets/js/firebase_crud.js"></script>
+      <script src="./../dailySignIn/dailySignIn1.js"></script>
       <script src="../cordova.js"></script>
       <script src="../js/index.js"></script>
       <script src="../assets/js/common.js"></script>

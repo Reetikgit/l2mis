@@ -7,7 +7,7 @@
     <author email="dev@cordova.apache.org" href="http://cordova.io">
         Apache Cordova Team
     </author>
-    <content src="employee/employee.html" />
+    <content src="auth/login.html" />
     <preference name="StatusBarOverlaysWebView" value="false" />
     <preference name="StatusBarBackgroundColor" value="#4cc1bb" />
     <preference name="StatusBarStyle" value="lightcontent" />

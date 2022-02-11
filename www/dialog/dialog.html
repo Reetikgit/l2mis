@@ -1,15 +1,104 @@
-
 <div id="logoff" class="overlay">
-	<div class="popup">
-		<h2 id="header">Log Off ?</h2>
-		<a class="close" href="#">&times;</a>
-		<div class="content" id="content">
-            <br>
-            <p><b>Date -</b> <span> 12/6/21</span></p>
-            <p><b>Total Hours -</b> <span>9</span></p>
-            <p><b>Note :</b> After logging off , you cant login again for the same day </p>
-            <button type="button" class="btn btn-success" style="background:#ff5b5c;margin-left: auto;margin-right: auto;display: block; "  onclick=authenticateLogOff()>Log Off             
-            </button>
-		</div>
-	</div>
+  <div class="popup">
+    <h2 id="header">Log Off ?</h2>
+    <a class="close" href="#">&times;</a>
+    <div class="content" id="content">
+      <br />
+      <p><b>Date -</b> <span> 12/6/21</span></p>
+      <p><b>Total Hours -</b> <span>9</span></p>
+      <p>
+        <b>Note :</b> After logging off , you cant login again for the same day
+      </p>
+      <button
+        type="button"
+        class="btn btn-success"
+        style="
+          background: #ff5b5c;
+          margin-left: auto;
+          margin-right: auto;
+          display: block;
+        "
+        onclick="authenticateLogOff()"
+      >
+        Log Off
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -- Triggers-->
+<div
+  class="modal fade"
+  id="dialog"
+  data-mdb-backdrop="static"
+  data-mdb-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="staticBackdropLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="dialog-label">Event</h5>
+      </div>
+      <div class="modal-body" id="dialog-message">Message</div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-mdb-dismiss="modal"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -- Confirmation-->
+<div
+  class="modal fade"
+  id="dialog_cnf"
+  data-mdb-backdrop="static"
+  data-mdb-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="staticBackdropLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="dialog_cnf-label">Event</h5>
+      </div>
+      <div class="modal-body" id="dialog_cnf-message">Message</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="delete_yes">
+          Yes
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-mdb-dismiss="modal"
+        >
+          No
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="ring" id="loader" style="display: none">
+  Adding
+  <loader></loader>
+</div>
+<div class="ring" id="loading" style="display: none">
+  ..
+  <loader></loader>
+</div>
+<div class="ring" id="uploading" style="display: none">
+  Uploading
+  <loader></loader>
+</div>
+<div class="ring" id="updating" style="display: none">
+  Updating
+  <loader></loader>
 </div>
