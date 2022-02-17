@@ -446,8 +446,9 @@ const login = async ({ email = false, password = false }) => {
   return firebase
     .auth()
     .signInWithEmailAndPassword(email, password)
-    .then(function () {
+    .then(function (data) {
       return {
+        user_data:data,
         user: true,
         message: "User Found",
       };

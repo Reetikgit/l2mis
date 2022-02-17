@@ -33,5 +33,5 @@ function onDeviceReady() {
     if (cordova.platformId == 'android') {
        // StatusBar.backgroundColorByHexString("#333");
     }
-    document.getElementById('deviceready').classList.add('ready');
+   // document.getElementById('deviceready').classList.add('ready');
 }

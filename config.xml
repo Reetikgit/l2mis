@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.l2m.ems" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>l2mEms</name>
+    <name>L2M MIS</name>
     <description>
         A sample Apache Cordova application that responds to the deviceready event.
     </description>
@@ -25,5 +25,23 @@
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
     </platform>
+    <!-- <preference name = "SplashScreen" value = "screen" />
+    <preference name = "SplashScreenDelay" value = "3000" /> -->
+     <!-- <feature name="SplashScreen">
+    <param name="android-package" value="org.apache.cordova.splashscreen.SplashScreen" />
+    </feature> -->
+   <!--  <plugin name="org.apache.cordova.splashscreen" spec="0.2.7" source="pgb" /> -->
+
+    <!-- <gap:plugin name = "org.apache.cordova.splashscreen" /> -->
+    <!-- <preference name = "SplashScreen" value = "screen" />
+    <preference name = "SplashScreenDelay" value = "5000" />
+    <preference name = "SplashMaintainAspectRatio" value = "true" /> -->
+
+
+    <plugin name="cordova-plugin-splashscreen" source="npm" />
+    <!-- <preference name = "SplashMaintainAspectRatio" value = "true" /> -->
+    <splash src="./splash.png" />
+    <icon src="./logo.png" />
+
     
 </widget>

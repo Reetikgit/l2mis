@@ -1,4 +1,4 @@
-<div id="logoff" class="overlay">
+<!-- <div id="logoff" class="overlay">
   <div class="popup">
     <h2 id="header">Log Off ?</h2>
     <a class="close" href="#">&times;</a>
@@ -24,7 +24,7 @@
       </button>
     </div>
   </div>
-</div>
+</div> -->
 
 <!-- Modal -- Triggers-->
 <div
@@ -47,6 +47,7 @@
           type="button"
           class="btn btn-secondary"
           data-mdb-dismiss="modal"
+          onclick="closeDialog()"
         >
           Close
         </button>
@@ -72,17 +73,41 @@
       </div>
       <div class="modal-body" id="dialog_cnf-message">Message</div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" id="delete_yes">
-          Yes
+        <button
+          type="button"
+          class="btn btn-secondary"
+          onclick="authenticateLogOff()"
+        >
+          Logg Off
         </button>
         <button
           type="button"
           class="btn btn-secondary"
           data-mdb-dismiss="modal"
+          onclick="closeDialog()"
         >
-          No
+          Cancel
         </button>
       </div>
+    </div>
+  </div>
+</div>
+<div
+  class="modal fade"
+  id="auto_hide_dialog"
+  data-mdb-backdrop="static"
+  data-mdb-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="staticBackdropLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="auto_dialog-label">Event</h5>
+      </div>
+      <div class="modal-body" id="auto_dialog-message">Message</div>
+
     </div>
   </div>
 </div>
@@ -90,8 +115,16 @@
   Adding
   <loader></loader>
 </div>
+<div class="ring" id="verifying" style="display: none">
+  Verifying
+  <loader></loader>
+</div>
+<div class="ring" id="waiting" style="display: none">
+  <p>Please Wait</p>
+  <loader></loader>
+</div>
 <div class="ring" id="loading" style="display: none">
-  ..
+  Loading
   <loader></loader>
 </div>
 <div class="ring" id="uploading" style="display: none">

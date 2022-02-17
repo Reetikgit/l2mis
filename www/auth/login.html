@@ -1,99 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <title>L2M MIS</title>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login</title>
-    <link rel="stylesheet" href="./../assets/css/bootstrap.css" />
-    <script defer src="../assets/fontawesome/js/all.min.js"></script>
-    <link rel="stylesheet" href="../assets/css/app.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!--===============================================================================================-->
+   
     <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.1/mdb.min.css"
       rel="stylesheet"
+      type="text/css"
+      href="vendor/bootstrap/css/bootstrap.min.css"
     />
+
     <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
       rel="stylesheet"
+      type="text/css"
+      href="fonts/font-awesome-4.7.0/css/font-awesome.min.css"
     />
-    <!-- Google Fonts -->
+    <!--===============================================================================================-->
     <link
-      href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
       rel="stylesheet"
+      href="fonts/iconic/css/material-design-iconic-font.min.css"
     />
-    <!-- MDB -->
-    <link rel="stylesheet" href="./../assets/css/custom.css" />
+    <!--===============================================================================================-->
+
+    <!--===============================================================================================-->
+    <link rel="stylesheet" href="vendor/animate/animate.css" />
+    <!--===============================================================================================-->
+    <link rel="stylesheet" href="vendor/css-hamburgers/hamburgers.min.css" />
+    <!--===============================================================================================-->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="vendor/animsition/css/animsition.min.css"
+    />
+
+    <link rel="stylesheet" type="text/css" href="css/util.css" />
+    <link rel="stylesheet" type="text/css" href="css/main.css" />
+    <!--===============================================================================================-->
   </head>
-  <style>
-    #auth {
-      background-image: url("../assets/images/login_bg_1.jpg");
-      /* background:url('https://www.constructionweekonline.in/cloud/2021/11/24/UE2vqt1l-rail-land-11.jpg'); */
-      background-repeat: no-repeat;
-      background-size: cover;
-    }
-  </style>
   <body>
-    <div id="auth">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-5 col-sm-12 mx-auto">
-            <div class="card pt-4">
-              <div class="card-body">
-                <div class="text-center mb-5">
-                  <h3 class="bold">L2M MIS</h3>
-                </div>
-                <form id="login">
-                  <div class="form-group position-relative has-icon-left">
-                    <label for="username">Email</label>
-                    <div class="position-relative">
-                      <input
-                        type="email"
-                        class="form-control"
-                        required
-                        id="email"
-                        name="email"
-                      />
-                      <div class="form-control-icon">
-                        <i class="fa fa-user"></i>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="form-group position-relative has-icon-left">
-                    <div class="clearfix">
-                      <label for="password">Password</label>
-                      <!-- <a href="#" class="float-end">
-                        <small>Forgot password?</small>
-                      </a> -->
-                    </div>
-                    <div class="position-relative">
-                      <input
-                        type="password"
-                        required
-                        class="form-control"
-                        id="password"
-                        name="password"
-                      />
-                      <div class="form-control-icon">
-                        <i class="fa fa-key"></i>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="clearfix">
-                    <img
-                      src="../assets/images/logo.png"
-                      class="responsive"
-                      alt=""
-                    />
-                  </div>
-                  <button class="btn btn-primary float-end">Login</button>
-                  <p class="bold" id="errorMessage" style="color: red"></p>
-                </form>
+    <div class="limiter">
+      <div class="container-login100">
+        <div class="wrap-login100">
+          <form class="login100-form validate-form" id="login">
+            <!-- <span class="login100-form-title p-b-49"> Login </span> -->
+            <img
+              src="../assets/images/logo.png"
+              style="
+                width: 200px;
+                height: 100px;
+                object-fit: contain;
+                margin-left: auto;
+                margin-right: auto;
+                display: block;
+              "
+              class="responsive"
+              alt=""
+            />
+            <div
+              class="wrap-input100 validate-input m-b-23"
+              data-validate="Email is reauired"
+            >
+              <span class="label-input100">Email</span>
+              <input
+                class="input100"
+                type="text"
+                name="email"
+                id="email"
+                placeholder="Organisation Email"
+              />
+              <span class="focus-input100" data-symbol="&#xf206;"></span>
+            </div>
+
+            <div
+              class="wrap-input100 validate-input"
+              data-validate="Password is required"
+            >
+              <span class="label-input100">Password</span>
+              <input
+                class="input100"
+                type="password"
+                name="pass"
+                id="password"
+                placeholder="Type your password"
+              />
+              <span class="focus-input100" data-symbol="&#xf190;"></span>
+            </div>
+
+            <div class="text-right p-t-8 p-b-31">
+              <a href="#"> Forgot password? </a>
+            </div>
+
+            <div class="container-login100-form-btn">
+              <div class="wrap-login100-form-btn">
+                <div class="login100-form-bgbtn"></div>
+                <button class="login100-form-btn">Login</button>
               </div>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     </div>
     <div id="modals"></div>
+    <div id="dropDownSelect1"></div>
+
+    <!--===============================================================================================-->
+    <script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="vendor/animsition/js/animsition.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="vendor/bootstrap/js/popper.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="vendor/select2/select2.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="vendor/daterangepicker/moment.min.js"></script>
+    <script src="vendor/daterangepicker/daterangepicker.js"></script>
+    <!--===============================================================================================-->
+    <script src="vendor/countdowntime/countdowntime.js"></script>
+    <!--===============================================================================================-->
+    <script src="js/main.js"></script>
     <script
       type="text/javascript"
       src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.1/mdb.min.js"
@@ -110,7 +137,7 @@
     <script src="./../auth/login1.js"></script>
     <script src="./../assets/js/jq.min.js"></script>
     <script>
-      $("#modals").load("./../dialog/dialog.html");
+      // $("#modals").load("./../dialog/dialog.html");
     </script>
   </body>
 </html>

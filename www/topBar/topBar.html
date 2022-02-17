@@ -1,8 +1,11 @@
-<nav class="navbar navbar-header navbar-expand navbar-light">
+<nav
+  class="navbar navbar-header navbar-expand navbar-light"
+  style="position: fixed"
+>
   <a class="sidebar-toggler" href="#"
     ><span class="navbar-toggler-icon"></span
   ></a>
-  <h5 style="padding:10px 35px 0 5px">L2M MIS</h5>
+  <h5 style="padding: 10px 55px 0 5px; font-size: 15px">L2M MIS</h5>
   <button
     class="btn navbar-toggler"
     type="button"
@@ -16,15 +19,60 @@
   </button>
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav d-flex align-items-center navbar-light ms-auto">
+      <li class="dropdown nav-icon" style="margin-left: 20%;">
+        <a
+          href="#"
+          data-bs-toggle="dropdown"
+          class="nav-link dropdown-toggle nav-link-lg nav-link-user"
+          style="font-size: 10px"
+          
+        >
+          <div class="d-lg-inline-block" style="font-size: 10px">
+            <i data-feather="bell" style="font-size: 5px !important"></i
+            ><span class="badge bg-info">2</span>
+          </div>
+        </a>
+        <div class="dropdown-menu dropdown-menu-end dropdown-menu-large">
+          <h6 class="py-2 px-4">Notifications</h6>
+          <ul class="list-group rounded-none">
+            <li class="list-group-item border-0 align-items-start">
+              <div class="row mb-2">
+                <div class="col-md-12 notif">
+                  <a href="leave_details.html"
+                    ><h6 class="text-bold">John Doe</h6>
+                    <p class="text-xs">applied for leave at 05-21-2021</p></a
+                  >
+                </div>
+                <div class="col-md-12 notif">
+                  <a href="leave_details.html"
+                    ><h6 class="text-bold">Jane Doe</h6>
+                    <p class="text-xs">applied for leave at 05-21-2021</p></a
+                  >
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </li>
       <li class="dropdown">
         <a
           href="#"
           data-bs-toggle="dropdown"
           class="nav-link dropdown-toggle nav-link-lg nav-link-user"
         >
-          <div class="avatar me-1">
-            <img src="../assets/images/user.png" alt="" srcset="" />
-            <div class="timer body_" id="body_"><div id="timediv"></div></div>
+          <div class="avatar me-1" style="margin-left: 0%;">
+            <img
+              id="e_img"
+              src="../assets/images/user.png"
+              style="width: 30px !important; object-fit: cover"
+              alt=""
+              srcset=""
+
+            />
+            <!-- <div class="timer body_" id="body_">
+              <div id="timediv" style="font-size: 15px"></div>
+            </div> -->
+            
           </div>
 
           <div class="d-none d-md-block d-lg-inline-block">Hi, Employee</div>
