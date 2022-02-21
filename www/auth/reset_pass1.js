@@ -45,6 +45,7 @@ firebase.auth().onAuthStateChanged(async function (user) {
               .update({ password_reset: true })
               .then(function () {
                 document.getElementById("updating").style.display = "none";
+                window.localStorage.setItem("uid", user.uid);
                 window.location = "./../employee/employee.html";
               });
           })

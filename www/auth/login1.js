@@ -1,25 +1,32 @@
-firebase.auth().onAuthStateChanged(async function (user) {
-  if (user) {
-    // User is signed in.
-    let Dbdata = await getDbData({
-      collectionName: "employee",
-      docId: user.uid,
-    });
-    let data = Dbdata.data;
+if(window.localStorage.getItem("uid") !=undefined){
+  window.location = "./../employee/employee.html";
+}else{
+  firebase.auth().onAuthStateChanged(async function (user) {
+    if (user) {
 
-    if (data.password_reset) {
-      window.location = "./../employee/employee.html";
+      // User is signed in.
+      let Dbdata = await getDbData({
+        collectionName: "employee",
+        docId: user.uid,
+      });
+      let data = Dbdata.data;
+  
+      if (data.password_reset) {
+        window.localStorage.setItem("uid", user.uid);
+        window.location = "./../employee/employee.html";
+      } else {
+        window.location = "./../auth/reset_pass.html";
+      }
+      //  window.location = "./../employee/employee.html";
     } else {
-      window.location = "./../auth/reset_pass.html";
+      // User is signed out.
+      // setTimeout(function () {
+      //   document.getElementById("verifying").style.display = "none";
+      // }, 300);
     }
-    //  window.location = "./../employee/employee.html";
-  } else {
-    // User is signed out.
-    // setTimeout(function () {
-    //   document.getElementById("verifying").style.display = "none";
-    // }, 300);
-  }
-});
+  });
+}
+
 const form = document.querySelector("#login");
 const verify = async (e) => {
   e.preventDefault();
@@ -37,6 +44,7 @@ const verify = async (e) => {
     let data = Dbdata.data;
 
     if (data.password_reset) {
+      window.localStorage.setItem("uid", uid);
       window.location = "./../employee/employee.html";
     } else {
       window.location = "./../auth/reset_pass.html";

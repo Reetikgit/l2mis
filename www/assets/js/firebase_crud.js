@@ -492,6 +492,9 @@ const logout = async () => {
     .signOut()
     .then(function () {
       // Sign-out successful.
+      window.localStorage.removeItem("uid")
+      window.localStorage.removeItem("working_time")
+      window.localStorage.setItem("uname")
       console.log("User Logged Out!");
       window.location.reload();
     })
