@@ -1,4 +1,11 @@
 var curr_user;
+if (document.getElementById("daily_name")){
+  document.getElementById("daily_name").innerHTML = window.localStorage.getItem("uname");
+}
+setTimeout(function(){
+  document.getElementById("e_img").src=window.localStorage.getItem("image");
+},200)
+
 firebase.auth().onAuthStateChanged(async function (user) {
   if (user) {
     // User is signed in.
@@ -10,7 +17,9 @@ firebase.auth().onAuthStateChanged(async function (user) {
     });
     let data = Dbdata.data;
     //let user_type = get_user_type("admin-users",user.uid)
+    window.localStorage.setItem("data", JSON.stringify(data));
     window.localStorage.setItem("uname", data.fname);
+    window.localStorage.setItem("image", data.image)
     document.getElementById("e_img").src=data.image
     if (document.getElementById("daily_name")){
         document.getElementById("daily_name").innerHTML = data.fname;
@@ -19,5 +28,6 @@ firebase.auth().onAuthStateChanged(async function (user) {
     
   } else {
     window.location = "./../auth/login.html";
+    window.localStorage.removeItem("uid")
   }
 });

@@ -7,8 +7,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 </head>
 <nav class="mobile-bottom-nav only-mobile">
-  <div class="mobile-bottom-nav__item mobile-bottom-nav__item--active">
-    <div class="mobile-bottom-nav__item-content" onclick="navigate()">
+  <div class="mobile-bottom-nav__item " id="home">
+    <div class="mobile-bottom-nav__item-content" onclick="navigate('employee')">
       <span class="material-icons"> home </span>
       Home
     </div>
@@ -25,10 +25,25 @@
       Apply Leave
     </div>
   </div>
-  <div class="mobile-bottom-nav__item">
-    <div class="mobile-bottom-nav__item-content">
+  <div class="mobile-bottom-nav__item " id="profile">
+    <div class="mobile-bottom-nav__item-content" onclick="navigate('profile')">
       <span class="material-icons"> account_circle </span>
-      Account
+      Profile
     </div>
   </div>
 </nav>
+
+<script>
+let ids = document.querySelectorAll(".mobile-bottom-nav__item");
+var pathArray = window.location.pathname.split("/");
+console.log( window.location.pathname)
+console.log(ids)
+for (let i = 0; i < ids.length; i++) {
+  if(pathArray[3].toLowerCase()=="employee"){
+    pathArray[3]="home"
+  }
+  if (ids[i].id.toLowerCase().includes(pathArray[3].toLowerCase())) {
+    ids[i].classList.add("mobile-bottom-nav__item--active");
+  }
+}
+</script>

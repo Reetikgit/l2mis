@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!--===============================================================================================-->
-   
+
     <link
       rel="stylesheet"
       type="text/css"
@@ -37,6 +37,7 @@
 
     <link rel="stylesheet" type="text/css" href="css/util.css" />
     <link rel="stylesheet" type="text/css" href="css/main.css" />
+
     <!--===============================================================================================-->
   </head>
   <body>
@@ -85,9 +86,18 @@
                 id="password"
                 placeholder="Type your password"
               />
+
               <span class="focus-input100" data-symbol="&#xf190;"></span>
             </div>
-
+            <p>
+              <input
+                type="checkbox"
+                onclick="showPass()"
+                style="margin-top: 10px"
+              />
+              Show Password
+            </p>
+            <p class="bold" id="errorMessage" style="color: red;font-weight: 800;"></p>
             <div class="text-right p-t-8 p-b-31">
               <a href="#"> Forgot password? </a>
             </div>
@@ -97,6 +107,7 @@
                 <div class="login100-form-bgbtn"></div>
                 <button class="login100-form-btn">Login</button>
               </div>
+             
             </div>
           </form>
         </div>
@@ -140,4 +151,14 @@
       // $("#modals").load("./../dialog/dialog.html");
     </script>
   </body>
+  <script>
+    function showPass() {
+      var x = document.getElementById("password");
+      if (x.type === "password") {
+        x.type = "text";
+      } else {
+        x.type = "password";
+      }
+    }
+  </script>
 </html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Employee Leave Management System</title>
+    <link rel="stylesheet" href="../assets/css/bootstrap.css" />
+    <script defer src="../assets/fontawesome/js/all.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="../assets/vendors/perfect-scrollbar/perfect-scrollbar.css"
+    />
+    <link rel="stylesheet" href="../assets/css/app.css" />
+    <link
+      rel="shortcut icon"
+      href="../assets/images/favicon.svg"
+      type="image/x-icon"
+    />
+    <link rel="stylesheet" href="../assets/css/custom.css" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto+Serif:wght@100&family=Roboto:wght@100&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="../assets/css/dialog.css" />
+    <link rel="stylesheet" href="./profile.css">
+  </head>
+  <body>
+    <div id="app">
+      <div class="swipe-area" id="swipeArea"></div>
+      <div id="sidebar" class=""></div>
+      <div id="bottomNavigation"></div>
+      <div id="main">
+        <div id="topBar"></div>
+        <div class="main-content container-fluid">
+          <section class="section">
+            <div class="">
+                <div class="muck-up">
+                    <!-- <div class="overlay"></div> -->
+                    <div class="top">
+                      <div class="user-profile">
+                        <img src='./../assets/images/user.png' id="image">
+                        <div class="user-details">
+                          <h4 id="name"></h4>
+                          <p id="desig"></p>
+                        </div>
+                      </div>
+                    </div>
+           
+                    <div class="bottom">
+                      <div class="title">
+                        <h3>Company Profile</h3>
+                        <small id="id"></small>
+                      </div>
+                      <ul class="tasks">
+                        <li class="one green">
+                          <span class="task-title">Email</span>
+                          <span class="task-time" id="email"></span>
+                          <span class="task-cat">Organisation mail</span>
+                  
+                        </li>
+                        <li class="one green">
+                          <span class="task-title">Joining Date</span>
+                          <span class="task-time" id="joining"></span>
+                          <span class="task-cat">yy/mm/dd</span>
+                  
+                        </li>
+                        <li class="two green">
+                          <span class="task-title">Employee Type</span>
+                          <span class="task-time"id="type"></span>
+                          <span class="task-cat">Current</span>
+                  
+                        </li>
+                        </li>
+                        <!-- <li class="tow green hang">
+                          <span class="task-title">Team Meeting</span>
+                          <span class="task-time">2pm</span>
+                          <span class="task-cat">Hangouts</span>
+                          <img src="https://raw.githubusercontent.com/arjunamgain/FilterMenu/master/images/2.jpg">
+                          <img src="https://raw.githubusercontent.com/arjunamgain/FilterMenu/master/images/3.jpg">
+                          <img src="https://raw.githubusercontent.com/arjunamgain/FilterMenu/master/images/profile.jpg">
+                        </li> -->
+                        <li class="three yellow">
+                          <span class="task-title">Projects Assigned</span>
+                          <span class="task-time" id="projects"></span>
+                          <span class="task-cat" id="lead"></span>
+                  
+                  
+                        </li>
+                  
+                        <li class="three yellow">
+                          <span class="task-title">Reports To </span>
+                          <span class="task-time" id="manager"></span>
+                          <span class="task-cat">Manager</span>
+                        </li>
+                        <li class="three yellow">
+                          <span class="task-title">Team Lead</span>
+                          <span class="task-time" id="team_lead"></span>
+                          <span class="task-cat">Based on project</span>
+                        </li>
+                        <li class="three red">
+                          <span class="task-title">Time off balance</span>
+                          <span class="task-time" id="leaves"></span>
+                          <span class="task-cat">Available leaves</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+    <div id="dialog"></div>
+    <script src="../assets/js/feather-icons/feather.min.js"></script>
+    <script src="../assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+    <script src="../assets/js/app.js"></script>
+    <script src="../assets/vendors/chartjs/Chart.min.js"></script>
+    <script src="../assets/vendors/apexcharts/apexcharts.min.js"></script>
+    <!-- <script src="../assets/js/pages/dashboard.js"></script> -->
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/jq.min.js"></script>
+    <script
+      type="text/javascript"
+      src="../assets/js/jquery.touchSwipe.min.js"
+    ></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-storage-compat.js"></script>
+    <script src="./../assets/js/firebase.js"></script>
+    <script src="./../assets/js/firebase_crud.js"></script>
+    <script src="../cordova.js"></script>
+    <script src="../js/index.js"></script>
+    <script src="./../assets/js/require.js"></script>
+    <script src="./../assets/js/common.js"></script>
+    <script src="./../profile/profile1.js"></script>
+  </body>
+</html>

@@ -42,7 +42,10 @@ const verify = async (e) => {
       docId: uid,
     });
     let data = Dbdata.data;
-
+    window.localStorage.setItem("data",JSON.stringify(data))
+    window.localStorage.removeItem("uid")
+    window.localStorage.removeItem("working_time")
+    window.localStorage.removeItem("uname")
     if (data.password_reset) {
       window.localStorage.setItem("uid", uid);
       window.location = "./../employee/employee.html";
@@ -51,8 +54,7 @@ const verify = async (e) => {
     }
   } else {
     //User not found
-    document.getElementById("errorMessage").innerHTML =
-      "Email or password incorrect";
+    document.getElementById("errorMessage").innerHTML = "Invalid email id or password";
     setTimeout(function () {
       document.getElementById("errorMessage").innerHTML = "";
     }, 2000);

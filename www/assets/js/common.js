@@ -55,7 +55,7 @@ setTimeout(function () {
 var date, date1;
 var time;
 var lat, long;
-var interval = setInterval(timestamphome, 1000);
+timestamphome()
 function timestamphome() {
   date = new Date();
   date1 = new Date();
@@ -78,8 +78,8 @@ function timestamphome() {
     ? (document.getElementById("date").innerHTML = date)
     : null;
 }
-function navigate() {
-  window.location = "../employee/employee.html";
+function navigate(place) {
+  window.location = "../"+place+"/"+place+".html";
 }
 async function openDailySign() {
   let res = await getStatus();
