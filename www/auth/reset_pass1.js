@@ -1,3 +1,5 @@
+let stored_data = JSON.parse(window.localStorage.getItem("data"));
+document.getElementById("emp_name").innerHTML = stored_data.fname;
 firebase.auth().onAuthStateChanged(async function (user) {
   if (user) {
     // User is signed in.
@@ -51,7 +53,19 @@ firebase.auth().onAuthStateChanged(async function (user) {
           })
           .catch(function (error) {
             // An error happened.
-            console.log(error)
+            console.log(error);
+            document.getElementById("auto_dialog-label").innerHTML = "Error";
+            document.getElementById("auto_dialog-message").innerHTML =
+              "Please login again with the old password to continue";
+            document.getElementById("auto_dialog-message").style.fontWeight =
+              "900";
+            document.getElementById("auto_dialog-message").style.textAlign =
+              "center";
+            showDialog();
+            setTimeout(function () {
+              window.location = "./../auth/login.html";
+              logout()
+            },2000);
           });
       }
     } else {
