@@ -34,4 +34,5 @@ function onDeviceReady() {
        // StatusBar.backgroundColorByHexString("#333");
     }
    // document.getElementById('deviceready').classList.add('ready');
+  
 }

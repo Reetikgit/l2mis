@@ -12,6 +12,9 @@ navItems.forEach(function (e, i) {
     this.classList.add("mobile-bottom-nav__item--active");
   });
 });
+let total_Work_hour = 0;
+var emp_data;
+let projects = [];
 setTimeout(function () {
   $(".swipe-area").swipe({
     swipeStatus: function (
@@ -55,7 +58,7 @@ setTimeout(function () {
 var date, date1;
 var time;
 var lat, long;
-timestamphome()
+timestamphome();
 function timestamphome() {
   date = new Date();
   date1 = new Date();
@@ -79,7 +82,7 @@ function timestamphome() {
     : null;
 }
 function navigate(place) {
-  window.location = "../"+place+"/"+place+".html";
+  window.location = "../" + place + "/" + place + ".html";
 }
 async function openDailySign() {
   let res = await getStatus();
@@ -109,12 +112,77 @@ function onError(error) {
 async function displayDialog() {
   //location.href = "#logoff";
   await getStatus();
+  var hours = Math.floor(window.localStorage.getItem("working_time") / 60);
+  var minutes = window.localStorage.getItem("working_time") % 60;
+
   document.getElementById("dialog_cnf-label").innerHTML = "Logg Off";
   document.getElementById("dialog_cnf-message").innerHTML =
-    "Total Work Hour - " +
-    window.localStorage.getItem("working_time") +
+    "Total Work Time - " +
+    hours +
     " " +
-    "minutes";
+    " hour " +
+    minutes +
+    " " +
+    "minutes" +
+    `
+    
+  <div id="projects">
+  <span id="tot_hrs"></span>
+  </div>
+  `;
+  if (minutes >= 30) {
+    hours += 1;
+  }
+  document.getElementById("tot_hrs").innerHTML =
+    "Total Rounded Hours - " + hours + "";
+  emp_data = JSON.parse(window.localStorage.getItem("data"));
+
+  for (let i in emp_data.projects) {
+    if (emp_data.projects.length > 1) {
+      document.getElementById("projects").innerHTML +=
+        `
+      <hr/>
+     
+      <div class="wrap-input100 validate-input" data-validate="Days required">
+      <span class="label-input100">` +
+        emp_data.projects[i] +
+        " :" +
+        `</span>
+        <br>
+      <input
+        class="input100"
+        type="number"
+        name="days"
+        required
+        id="` +
+        emp_data.projects[i] +
+        "_" +
+        i +
+        `"
+        placeholder="Hours spent on this project"
+        required
+      />
+    </div>
+    <br>
+      `;
+    }
+  }
+  document.getElementById("projects").innerHTML += `
+  <span id="error_msg" style="color:red;font-weight:700;display:none">Invalid distribution of hours</span>
+  `;
+  if (emp_data.projects.length > 1) {
+    if (hours == 0)
+      for (let i in emp_data.projects) {
+        document.getElementById(emp_data.projects[i] + "_" + i).disabled = true;
+      }
+    else
+      for (let i in emp_data.projects) {
+        document.getElementById(
+          emp_data.projects[i] + "_" + i
+        ).disabled = false;
+      }
+  }
+
   $("#dialog_cnf").modal("show");
 }
 function closeDialog() {
@@ -128,6 +196,8 @@ async function loggoff() {
   document.getElementById("waiting").style.display = "block";
   data = {
     logout_time: new Date().toString(),
+    total_Work_hour: total_Work_hour,
+    time_between_projects: projects,
   };
   let uid = window.localStorage.getItem("uid");
   await db
@@ -144,6 +214,32 @@ async function loggoff() {
     .catch(function () {
       alert("error");
     });
+  let timesheetdata = await db.collection("timesheet").doc(uid).get();
+  let data2;
+  if (timesheetdata.data()) {
+    data2 = {
+      data: window.localStorage.getItem("data"),
+      total_Work_hour: total_Work_hour + timesheetdata.data().total_Work_hour,
+      time_between_projects: projects,
+    };
+    await db
+    .collection("timesheet")
+    .doc(uid)
+    .update(data2)
+    .then(function () {})
+    .catch(function () {
+      alert("error");
+    });
+  } else {
+    data2 = {
+      data: window.localStorage.getItem("data"),
+      total_Work_hour: total_Work_hour,
+      time_between_projects: projects,
+    };
+    let res = await setDbData({collectionName:"timesheet", docId:uid, dataToUpdate:data2})
+  }
+
+ 
 }
 
 ////// Finger Print  Code //////
@@ -265,10 +361,61 @@ function errorCallback(error) {
 // finger Print Log Offf//
 
 function authenticateLogOff() {
-  FingerprintAuth.isAvailable(
-    isAvailableSuccessCallbackLogOff,
-    isAvailableErrorLogOff
-  );
+  projects = [];
+  let counter = 0;
+  if (window.localStorage.getItem("working_time") >= 30) {
+    var hours = Math.floor(window.localStorage.getItem("working_time") / 60);
+    var minutes = window.localStorage.getItem("working_time") % 60;
+    total_Work_hour = hours;
+    if (minutes >= 30) {
+      total_Work_hour += 1;
+    }
+    if (emp_data.projects.length > 1) {
+      for (let i in emp_data.projects) {
+        document.getElementById(
+          emp_data.projects[i] + "_" + i
+        ).disabled = false;
+        counter += parseInt(
+          document.getElementById(emp_data.projects[i] + "_" + i).value
+        );
+        let obj = {
+          project: emp_data.projects[i],
+          hour_spent: document.getElementById(emp_data.projects[i] + "_" + i)
+            .value,
+        };
+        projects.push(obj);
+      }
+      if (counter == total_Work_hour) {
+        FingerprintAuth.isAvailable(
+          isAvailableSuccessCallbackLogOff,
+          isAvailableErrorLogOff
+        );
+      } else {
+        document.getElementById("error_msg").style.display = "block";
+        setTimeout(function () {
+          document.getElementById("error_msg").style.display = "none";
+        }, 2000);
+      }
+    } else {
+      let obj = {
+        project: emp_data.projects[0],
+        hour_spent: total_Work_hour,
+      };
+      projects.push(obj);
+      FingerprintAuth.isAvailable(
+        isAvailableSuccessCallbackLogOff,
+        isAvailableErrorLogOff
+      );
+    }
+
+    console.log(total_Work_hour);
+  } else {
+    total_Work_hour = 0;
+    FingerprintAuth.isAvailable(
+      isAvailableSuccessCallbackLogOff,
+      isAvailableErrorLogOff
+    );
+  }
 }
 function isAvailableSuccessCallbackLogOff(result) {
   // result = {

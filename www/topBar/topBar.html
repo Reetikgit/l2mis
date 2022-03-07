@@ -1,3 +1,8 @@
+<style>
+  .dropdown-menu {
+    min-width: 14em !important;
+  }
+</style>
 <nav
   class="navbar navbar-header navbar-expand navbar-light"
   style="position: fixed"
@@ -29,26 +34,15 @@
         >
           <div class="d-lg-inline-block" style="font-size: 10px">
             <i data-feather="bell" style="font-size: 5px !important"></i
-            ><span class="badge bg-info">2</span>
+            ><span class="badge bg-info" id="notify_count"></span>
           </div>
         </a>
         <div class="dropdown-menu dropdown-menu-end dropdown-menu-large">
           <h6 class="py-2 px-4">Notifications</h6>
           <ul class="list-group rounded-none">
             <li class="list-group-item border-0 align-items-start">
-              <div class="row mb-2">
-                <div class="col-md-12 notif">
-                  <a href="leave_details.html"
-                    ><h6 class="text-bold">John Doe</h6>
-                    <p class="text-xs">applied for leave at 05-21-2021</p></a
-                  >
-                </div>
-                <div class="col-md-12 notif">
-                  <a href="leave_details.html"
-                    ><h6 class="text-bold">Jane Doe</h6>
-                    <p class="text-xs">applied for leave at 05-21-2021</p></a
-                  >
-                </div>
+              <div class="row mb-2" id="content">
+               
               </div>
             </li>
           </ul>
@@ -93,3 +87,4 @@
     </ul>
   </div>
 </nav>
+<script src="./../topBar/topBar1.js"></script>

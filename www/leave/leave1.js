@@ -49,15 +49,18 @@ const applyLeave = async (e) => {
     leaves: arr,
     data: data2,
   };
-
+  
   let res = await setDbData({
     collectionName: "request_leave",
     docId: id,
     dataToUpdate: final_data,
   });
+
   document.getElementById("dialog-label").innerHTML = "Success";
   document.getElementById("dialog-message").innerHTML =
     "Leave applied Successfully";
   $("#dialog").modal("show");
 };
 form.addEventListener("submit", applyLeave);
+
+

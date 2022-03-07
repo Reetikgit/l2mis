@@ -38,7 +38,7 @@ const deleteDbDoc = async ({ collectionName=false, docId=false }) => {
     console.error(error);
     if (retryDeleteDbDoc < 2) {
       retryDeleteDbDoc++;
-      alert(`Retrying Attempt: ${retryDeleteDbDoc} Reason: ${error.message}`);
+     // alert(`Retrying Attempt: ${retryDeleteDbDoc} Reason: ${error.message}`);
       deleteDbDoc({ ref, fileName });
     } else {
       return {
@@ -86,7 +86,7 @@ const updateDbDoc = async ({
     console.error(error);
     if (retryUpdateDbDoc < 2) {
       retryUpdateDbDoc++;
-      alert(`Retrying Attempt: ${retryUpdateDbDoc} Reason: ${error.message}`);
+     // alert(`Retrying Attempt: ${retryUpdateDbDoc} Reason: ${error.message}`);
       updateDbDoc({
         collectionName,
         docId,
@@ -121,7 +121,7 @@ const getUrlOfFile = async ({ ref, fileName }) => {
     console.error(error);
     if (retryGetURL < 2) {
       retryGetURL++;
-      alert(`Retry. Attempt: ${retryGetURL} Reason: ${error.message} `);
+     // alert(`Retry. Attempt: ${retryGetURL} Reason: ${error.message} `);
       getUrlOfFile({ ref, fileName });
     } else {
       return {
@@ -146,7 +146,7 @@ const uploadFileToStorage = async ({ ref, fileName, file }) => {
     console.error(error);
     if (retryUploadStorage < 2) {
       retryUploadStorage++;
-      alert(`Retry. Attempt: ${retryUploadStorage} Reason: ${error.message} `);
+   //   alert(`Retry. Attempt: ${retryUploadStorage} Reason: ${error.message} `);
       uploadFileToStorage({ ref });
     } else {
       return {
@@ -175,7 +175,7 @@ function logouAuthtUser({ redirectURL }) {
         retryLogout++;
         logoutUser({ redirectURL });
       } else {
-        alert(`Unable to logout at moment. Reason: ${error.message}`);
+        //alert(`Unable to logout at moment. Reason: ${error.message}`);
       }
     });
 }
@@ -203,9 +203,9 @@ async function getDbData({collectionName=false, docId=false }) {
     console.error(error);
     if (retryDbData < 2) {
       retryDbData++;
-      alert(
-        `Attempt: ${retryDbData} Unable to fetch the data. Reason: ${error.message}`
-      );
+      // alert(
+      //   `Attempt: ${retryDbData} Unable to fetch the data. Reason: ${error.message}`
+      // );
       getDbData({ collectionName, docId });
     } else {
       return {
@@ -245,9 +245,9 @@ async function getDbSubCollData({
     console.error(error);
     if (retryDbSubCollData < 2) {
       retryDbSubCollData++;
-      alert(
-        `Attempt: ${retryDbSubCollData} Unable to fetch the data of sub collection document. Reason: ${error.message}`
-      );
+      // alert(
+      //   `Attempt: ${retryDbSubCollData} Unable to fetch the data of sub collection document. Reason: ${error.message}`
+      // );
       getDbSubCollData({ collectionName, docId });
     } else {
       return {
@@ -279,9 +279,9 @@ async function getDbCollData(collectionName) {
     console.error(error);
     if (retryDbCollData < 2) {
       retryDbCollData++;
-      alert(
-        `Attempt: ${retryDbCollData} Unable to fetch the collection data. Reason: ${error.message}`
-      );
+      // alert(
+      //   `Attempt: ${retryDbCollData} Unable to fetch the collection data. Reason: ${error.message}`
+      // );
       getDbCollData({ collectionName });
     } else {
       return {
@@ -320,9 +320,9 @@ async function setDbData({
     console.error(error);
     if (retrySetDbData < 2) {
       retrySetDbData++;
-      alert(
-        `Attempt: ${retrySetDbData} Unable to save the data. Reason: ${error.message}`
-      );
+      // alert(
+      //   `Attempt: ${retrySetDbData} Unable to save the data. Reason: ${error.message}`
+      // );
       setDbData({ collectionName, docId, dataToUpload });
     } else {
       return {
@@ -360,9 +360,9 @@ async function setDbData({
     console.error(error);
     if (retrySetDbData < 2) {
       retrySetDbData++;
-      alert(
-        `Attempt: ${retrySetDbData} Unable to save the data. Reason: ${error.message}`
-      );
+      // alert(
+      //   `Attempt: ${retrySetDbData} Unable to save the data. Reason: ${error.message}`
+      // );
       setDbData({ collectionName, docId, dataToUpload });
     } else {
       return {
@@ -421,7 +421,7 @@ const createSubColl = async ({
     console.error(error);
     if (retryCreateSubColl < 2) {
       retryCreateSubColl++;
-      alert(`Retrying Attempt: ${retryCreateSubColl} Reason: ${error.message}`);
+      //alert(`Retrying Attempt: ${retryCreateSubColl} Reason: ${error.message}`);
       createSubColl({
         maincollectionName,
         mainDocId,
@@ -497,7 +497,7 @@ const logout = async () => {
       window.localStorage.removeItem("uname")
       window.localStorage.removeItem("data")
       console.log("User Logged Out!");
-      window.location.reload();
+      window.location="./../auth/login.html";
     })
     .catch(function (error) {
       // An error happened.

@@ -2,7 +2,6 @@
 //   document.getElementById("loading").style.display = "block";
 // }, 10);
 async function getStatus() {
-
   let check_login_status = await getDbSubCollData({
     collectionName: "attendance",
     docId: new Date().toUTCString().slice(5, 16),
@@ -38,6 +37,14 @@ async function getStatus() {
     document.getElementById("login").disabled = false;
     return false;
   }
+  cordova.plugins.firebase.messaging.getToken().then(async function (token) {
+    console.log("Got device token: ", token);
+    let data={
+      fcm_token:token
+    }
+    let res = await updateDbDoc({collectionName:"employee",docId:window.localStorage.getItem("uid"), dataToUpdate:data})
+  });
+
 }
 setTimeout(function () {
   getStatus();
