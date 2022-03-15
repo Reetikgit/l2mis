@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="NONE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="ecd18eb4-1d1e-41c0-ab8a-b7bd2b667854" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/www/assets/js/common.js" beforeDir="false" afterPath="$PROJECT_DIR$/www/assets/js/common.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/www/assets/js/firebase_crud.js" beforeDir="false" afterPath="$PROJECT_DIR$/www/assets/js/firebase_crud.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/www/auth/login1.js" beforeDir="false" afterPath="$PROJECT_DIR$/www/auth/login1.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/www/bottomNavigation/navigation.html" beforeDir="false" afterPath="$PROJECT_DIR$/www/bottomNavigation/navigation.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/www/dialog/dialog.html" beforeDir="false" afterPath="$PROJECT_DIR$/www/dialog/dialog.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/www/employee/employee1.js" beforeDir="false" afterPath="$PROJECT_DIR$/www/employee/employee1.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/www/leave/leave_status1.js" beforeDir="false" afterPath="$PROJECT_DIR$/www/leave/leave_status1.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/www/topBar/topBar1.js" beforeDir="false" afterPath="$PROJECT_DIR$/www/topBar/topBar1.js" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="268h0ukjzGZrlPcBS9w8StlRbv2" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="android.sdk.path" value="$USER_HOME$/AppData/Local/Android/Sdk" />
+    <property name="dart.analysis.tool.window.visible" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="show.migrate.to.gradle.popup" value="false" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="ecd18eb4-1d1e-41c0-ab8a-b7bd2b667854" name="Default Changelist" comment="" />
+      <created>1646810900618</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1646810900618</updated>
+    </task>
+    <servers />
+  </component>
+</project>

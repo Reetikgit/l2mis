@@ -58,7 +58,6 @@
     />
     <link rel="stylesheet" type="text/css" href="./../auth/css/util.css" />
     <link rel="stylesheet" type="text/css" href="./../auth/css/main.css" />
-    <link rel="stylesheet" type="text/css" href="leave.css" />
   </head>
   <body>
     <div id="app">
@@ -71,86 +70,79 @@
           <div class="page-title" style="display: flex; margin-top: 15%"></div>
           <section class="section">
             <div class="row mb-2">
-              <div class="wrap-login100">
-                <form class="login100-form validate-form" id="leave">
-                  <!-- <span class="login100-form-title p-b-49"> Login </span> -->
-                  <h3
-                    style="
-                      margin-left: auto;
-                      margin-right: auto;
-                      display: table;
-                      font-weight: 800;
-                    "
-                  >
-                    Apply Time Off
-                  </h3>
-                  <br>
-                  <div
-                    class="wrap-input100 validate-input"
-                    data-validate="Days required"
-                  >
-                    <span class="label-input100">No of Day/s</span>
-                    <input
-                      class="input100"
-                      type="number"
-                      name="days"
-                      id="days"
-                      placeholder="No. of days"
-                      required
-                    />
-
-                    <span class="focus-input100 fas fa-business-time" style="margin: 3%;color: green;"></span>
-                  </div>
-                  <div
-                    class="wrap-input100 validate-input"
-                    data-validate="Days required"
-                  >
-                    <span class="label-input100">Select Dates</span>
-                    <input
-                      class="input100 date"
-                      type="text"
-                      name="dates"
-                      id="dates"
-                      placeholder="Multiple allowed"
-                      required
-                    />
-                    <span class="focus-input100 far fa-calendar-alt" style="margin: 3%;color: green;" ></span>
-                  </div>
-                  <div
-                    class="wrap-input100 validate-input m-b-23"
-                    data-validate="Email is reauired"
-                  >
-                    <span class="label-input100">Leave Type</span>
-                    <select class="form-select wrap-input100 validate-input m-b-23" required id="leaveType_dropdown">
-                    
-                    </select>
-                  </div>
-                  <div
-                    class="wrap-input100 validate-input"
-                    data-validate="Days required"
-                  >
-                    <span class="label-input100 ">Short Description</span>
-                    <input
-                      class="input100"
-                      type="text"
-                      name="desc"
-                      id="desc"
-                      required
-                      placeholder="Reason of leave"
-                    />
-
-                    <span class="focus-input100 far fa-comment-alt" style="margin: 3%;color: green;"></span>
-                  </div>
-                  <div class="text-right p-t-8 p-b-31"></div>
-
-                  <div class="container-login100-form-btn">
-                    <div class="wrap-login100-form-btn">
-                      <div class="login100-form-bgbtn"></div>
-                      <button class="login100-form-btn">Apply</button>
+                <div class="wrap-login100">
+                    <form class="login100-form validate-form" id="update_password">
+                      <!-- <span class="login100-form-title p-b-49"> Login </span> -->
+                      <h3
+                        style="
+                          margin-left: auto;
+                          margin-right: auto;
+                          display: table;
+                          font-weight: 800;
+                        "
+                      >
+                        Reset your password
+                      </h3>
+                      <br>
+                      <div
+                        class="wrap-input100 validate-input"
+                        data-validate="Days required"
+                      >
+                        <span class="label-input100">Current Password</span>
+                        <input
+                          class="input100"
+                          type="password"
+                          name="password"
+                          id="curr_password"
+                          placeholder="Type your password here"
+                          required
+                        />
+    
+                        <span class="focus-input100" data-symbol="&#xf190;" style="color: green;"></span>
+                      </div>
+                      <div
+                      class="wrap-input100 validate-input"
+                      data-validate="Days required"
+                    >
+                      <span class="label-input100">New Password</span>
+                      <input
+                        class="input100"
+                        type="password"
+                        name="password"
+                        id="new_password"
+                        placeholder="Type your password here"
+                        required
+                      />
+  
+                      <span class="focus-input100" data-symbol="&#xf190;" style="color: green;"></span>
                     </div>
+     
+                    <div
+                    class="wrap-input100 validate-input"
+                    data-validate="Days required"
+                  >
+                    <span class="label-input100">Confirm New Password</span>
+                    <input
+                      class="input100"
+                      type="password"
+                      name="password"
+                      id="cnf_password"
+                      placeholder="Type your password here"
+                      required
+                    />
+
+                    <span class="focus-input100" data-symbol="&#xf190;" style="color: green;"></span>
                   </div>
-                </form>
-              </div>
+                      <div class="text-right p-t-8 p-b-31"></div>
+    
+                      <div class="container-login100-form-btn">
+                        <div class="wrap-login100-form-btn">
+                          <div class="login100-form-bgbtn"></div>
+                          <button class="login100-form-btn">Reset</button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
             </div>
           </section>
         </div>
@@ -179,7 +171,7 @@
     <script src="../js/index.js"></script>
     <script src="./../assets/js/require.js"></script>
     <script src="./../assets/js/common.js"></script>
-    <script src="./../leave/leave1.js"></script>
+    <script src="./../settings/settings1.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script>
   </body>
   <script>

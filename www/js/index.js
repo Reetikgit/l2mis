@@ -19,20 +19,30 @@
 
 // Wait for the deviceready event before using any of Cordova's device APIs.
 // See https://cordova.apache.org/docs/en/latest/cordova/events/events.html#deviceready
-document.addEventListener('deviceready', onDeviceReady, false);
+document.addEventListener("deviceready", onDeviceReady, false);
 
 // function onBackButtonTapped() {
 //     history.go(-1); // Back
 //     //document.location.reload(true); // Reload (if needed)
 // }
 function onDeviceReady() {
-    // Cordova is now initialized. Have fun!
-   
-    console.log('Running cordova-' + cordova.platformId + '@' + cordova.version);
-    // document.addEventListener("backbutton", onBackButtonTapped, false);
-    if (cordova.platformId == 'android') {
-       // StatusBar.backgroundColorByHexString("#333");
+  // Cordova is now initialized. Have fun!
+
+  console.log("Running cordova-" + cordova.platformId + "@" + cordova.version);
+  // document.addEventListener("backbutton", onBackButtonTapped, false);
+  if (cordova.platformId == "android") {
+    // StatusBar.backgroundColorByHexString("#333");
+  }
+  document.addEventListener("backbutton", onBackKeyDown, false);
+
+  function onBackKeyDown() {
+    // Handle the back button
+    if (window.location.href.includes("login.html")) navigator.app.exitApp();
+    else if (!window.location.href.includes("employee.html"))
+      window.open("./../employee/employee.html");
+    else {
+      navigator.app.exitApp();
     }
-   // document.getElementById('deviceready').classList.add('ready');
-  
+  }
+  // document.getElementById('deviceready').classList.add('ready');
 }

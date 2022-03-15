@@ -190,54 +190,68 @@ function closeDialog() {
 
   $("#dialog_cnf").modal("hide");
   $("#dialog").modal("hide");
+  $("#dialog_adjust").modal("hide");
 }
 
 async function loggoff() {
-  document.getElementById("waiting").style.display = "block";
+  document.getElementById("updating").style.display = "block";
   data = {
     logout_time: new Date().toString(),
     total_Work_hour: total_Work_hour,
     time_between_projects: projects,
   };
   let uid = window.localStorage.getItem("uid");
+  let timesheet_date = new Date().toString().split(" ")[1]+"_"+new Date().toString().split(" ")[3]
   await db
     .collection("attendance")
     .doc(date)
     .collection(uid)
     .doc(uid)
     .update(data)
-    .then(function () {
-      $("#dialog_cnf").modal("hide");
-      document.getElementById("waiting").style.display = "none";
-      getStatus();
+    .then(async function () {
+      let timesheetdata = await db.collection("timesheet_"+timesheet_date).doc(uid).get();
+      let data2;
+      if (timesheetdata.data()) {
+        for(let i in projects){
+          projects[i].hour_spent =parseInt(projects[i].hour_spent)+parseInt(timesheetdata.data().time_between_projects[i].hour_spent)
+        }
+        data2 = {
+          data: window.localStorage.getItem("data"),
+          total_Work_hour: parseInt(total_Work_hour) + parseInt(timesheetdata.data().total_Work_hour),
+          time_between_projects: projects,
+        };
+        await db
+        .collection("timesheet_"+timesheet_date)
+        .doc(uid)
+        .update(data2)
+        .then(function () {
+          $("#dialog_cnf").modal("hide");
+      
+          document.getElementById("updating").style.display = "none";
+          getStatus();
+        })
+        .catch(function () {
+          alert("error");
+        });
+      } else {
+        data2 = {
+          data: window.localStorage.getItem("data"),
+          total_Work_hour: total_Work_hour,
+          time_between_projects: projects,
+        };
+        let res = await setDbData({collectionName:"timesheet_"+timesheet_date, docId:uid, dataToUpdate:data2}).then(function(){
+          $("#dialog_cnf").modal("hide");
+      
+          document.getElementById("updating").style.display = "none";
+          getStatus();
+        })
+      }
+
     })
     .catch(function () {
       alert("error");
     });
-  let timesheetdata = await db.collection("timesheet").doc(uid).get();
-  let data2;
-  if (timesheetdata.data()) {
-    data2 = {
-      data: window.localStorage.getItem("data"),
-      total_Work_hour: total_Work_hour + timesheetdata.data().total_Work_hour,
-      time_between_projects: projects,
-    };
-    await db
-    .collection("timesheet")
-    .doc(uid)
-    .update(data2)
-    .then(function () {})
-    .catch(function () {
-      alert("error");
-    });
-  } else {
-    data2 = {
-      data: window.localStorage.getItem("data"),
-      total_Work_hour: total_Work_hour,
-      time_between_projects: projects,
-    };
-    let res = await setDbData({collectionName:"timesheet", docId:uid, dataToUpdate:data2})
-  }
+
 
  
 }
@@ -385,7 +399,9 @@ function authenticateLogOff() {
         };
         projects.push(obj);
       }
+      console.log(projects)
       if (counter == total_Work_hour) {
+        
         FingerprintAuth.isAvailable(
           isAvailableSuccessCallbackLogOff,
           isAvailableErrorLogOff
@@ -402,6 +418,7 @@ function authenticateLogOff() {
         hour_spent: total_Work_hour,
       };
       projects.push(obj);
+      console.log(projects)
       FingerprintAuth.isAvailable(
         isAvailableSuccessCallbackLogOff,
         isAvailableErrorLogOff
@@ -410,7 +427,15 @@ function authenticateLogOff() {
 
     console.log(total_Work_hour);
   } else {
+
     total_Work_hour = 0;
+    for (let i in emp_data.projects) {
+      let obj = {
+        project: emp_data.projects[i],
+        hour_spent: 0,
+      };
+      projects.push(obj);
+    }
     FingerprintAuth.isAvailable(
       isAvailableSuccessCallbackLogOff,
       isAvailableErrorLogOff

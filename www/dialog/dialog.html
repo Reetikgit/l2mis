@@ -95,6 +95,42 @@
 </div>
 <div
   class="modal fade"
+  id="dialog_adjust"
+  data-mdb-backdrop="static"
+  data-mdb-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="staticBackdropLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="dialog_adjust-label">Event</h5>
+      </div>
+      <div class="modal-body" id="dialog_adjust-message" style="font-weight: 600;color: black;">Message</div>
+
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-warning"
+          onclick="adjust()"
+        >
+          Adjust
+        </button>
+        <button
+          type="button"
+          class="btn btn-danger"
+          data-mdb-dismiss="modal"
+          onclick="closeDialog()"
+        >
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div
+  class="modal fade"
   id="auto_hide_dialog"
   data-mdb-backdrop="static"
   data-mdb-keyboard="false"
@@ -135,3 +171,16 @@
   Updating
   <loader></loader>
 </div>
+
+<!-- use these functions in javascript file for default android based notifications -->
+
+<!-- function alertDismissed() {
+  // do something
+}
+
+navigator.notification.alert(
+  'You are the winner!',  // message
+  alertDismissed,         // callback
+  'Game Over',            // title
+  'Done'                  // buttonName
+); -->

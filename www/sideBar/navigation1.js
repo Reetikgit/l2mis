@@ -31,3 +31,13 @@ firebase.auth().onAuthStateChanged(async function (user) {
     window.localStorage.removeItem("uid")
   }
 });
+
+
+// Check network status 
+
+document.addEventListener("offline", onOffline, false);
+
+function onOffline() {
+    // Handle the offline event
+    window.location="./../network/not_found.html"
+} 

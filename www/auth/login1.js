@@ -46,6 +46,7 @@ const verify = async (e) => {
     window.localStorage.removeItem("uid")
     window.localStorage.removeItem("working_time")
     window.localStorage.removeItem("uname")
+    window.localStorage.removeItem("activity")
     if (data.password_reset) {
       window.localStorage.setItem("uid", uid);
       window.location = "./../employee/employee.html";

@@ -10,7 +10,7 @@ const displaynotification = async (e) => {
                 document.getElementById("notify_count").innerHTML = count;
                 document.getElementById("content").innerHTML += `
                 <div class="col-md-12 notif">
-                    <a href="./../leave_management/pending.html"
+                    <a href="./../leave/leave_status.html"
                     >
                     <h6 class="text-xs">Your request for `+objData.type+` applied for `+(objData).days+` days has been `+(objData.status)+` by the admin</h6></a
                     >
