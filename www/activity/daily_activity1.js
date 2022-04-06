@@ -1,8 +1,8 @@
 let idss = [];
 var global_data;
 var interval;
-let counter=0;
-let int_counter=0;
+let counter = 0;
+let int_counter = 0;
 async function getActivity() {
   let month = new Date().toString().split(" ")[1];
   let year = new Date().toString().split(" ")[3];
@@ -10,117 +10,66 @@ async function getActivity() {
   let local_arr = [];
   let local_dates = [];
   let index = 0;
-  console.log("Came")
-  if(int_counter>2){
-    clearInterval(interval);
-    interval=0;
-  }
-  let local_data = JSON.parse(window.localStorage.getItem("activity"));
-  document.getElementById("activitys").innerHTML = "";
-  if (local_data != undefined) {
-    // local_arr.push(local_data)
-    // console.log(local_arr)
-    counter=1;
-    let btnText="Adjust";
-    let txt=false
-    let color="orange"
-    document.getElementById("loading").style.display = "none";
-    clearInterval(interval);
-    for (index = 0; index < local_data.length; index++) {
-      console.log(local_data[index]);
-      if (local_data[index] != null) {
-        let value = local_data[index];
-        let l_day = value.tstamp.split(" ")[2];
-        let l_month = value.tstamp.split(" ")[1];
-        if (l_month != month) {
-          window.localStorage.removeItem("activity");
-          break;
+  let display_type = "none";
+  showData();
+  function showData() {
+    let stored_Data = JSON.parse(window.localStorage.getItem("activity"));
+    if (stored_Data) {
+      document.getElementById("activitys").innerHTML = "";
+      for (let i in stored_Data) {
+        let val = stored_Data[i];
+        let total_Work_hour = 0;
+        let day = val.punched_times[0].tstamp.split(" ")[2];
+        let tstamp = val.punched_times[val.punched_times.length-1].tstamp;
+        for (let k in val.punched_times) {
+          total_Work_hour += val.punched_times[k].total_Work_hour;
         }
-        local_dates.push(l_day);
-        if(value.type=="adjusted"){
-          btnText="Adjusted"
-          txt=true;
-          color="gray"
-        }else{
-          txt=false;
-          btnText="Adjust"
-          color="orange";
+        if (stored_Data.status && stored_Data.status == "adjusted") {
+          display_type = "block";
         }
-        if (value.logout_time)
-          document.getElementById("activitys").innerHTML +=
-            `
-          <div class="list-item" data-id="19">
+        document.getElementById("activitys").innerHTML +=
+          `
+          <div class="list-item " data-id="19">
           <div>
             <a href="#" data-abc="true"
               ><span class="w-48 avatar gd-warning" style="font-size:11px"
                 >` +
-            l_day +
-            " " +
-            l_month +
-            `</span
+          day +
+          " " +
+          month +
+          `</span
               ></a>
           </div>
-          <div class="flex">
-            <div class="item-except text-muted text-sm " style="font-size:11px">
-              Login Time : ` +
-            value.tstamp.split(" ")[4] +
-            `
-            </div>
-            <div class="item-except text-muted text-sm " style="font-size:11px">
-              Logout Time : ` +
-            value.logout_time.split(" ")[4] +
-            `
-            </div>
+          <div class="flex ">
             <div class="item-except text-muted text-sm " style="font-size:11px">
               Total Work Hour : ` +
-            value.total_Work_hour +
-            `
+          total_Work_hour +
+          `
+            </div>
+            <div class="item-except text-muted text-sm " style="font-size:11px">
+              Total Punch : ` +
+          val.punched_times.length +
+          `
             </div>
           </div>
+          
           <div class="no-wrap">
             <div
               class="item-date text-muted text-sm d-md-block"
             >
-              <button
-                class="btn btn-warning"
-                style="
-                  font-size: 8px;
-                  border-radius: 11px;
-                  width: 100%;
-                  height: 30px;
-                  margin-left: 30%;
-                  background-color:`+color+`
-
-                  "
-                onclick=showAdjustDialog("` +
-            value.tstamp.split(/\s/).join("") +
-            `")
-            id="`+value.tstamp.split(/\s/).join("")+`"
-              >
-
-                `+btnText+`
-              </button>
+              <button class="btn btn-primary" style="font-size:10px;margin-left:55%;color:green;" onclick=showAdjustDialog("` +
+          tstamp.split(/\s/).join("") +
+          `")>View</button>
             </div>
           </div>
         </div>
+        
           `;
-
-          document.getElementById(value.tstamp.split(/\s/).join("")).disabled=txt
+        document.getElementById("loading").style.display = "none";
       }
     }
-  } else {
-    int_counter++;
-    if(int_counter>3){
-      clearInterval(interval)
-      interval=0;
-    }
-    interval = setInterval(function () {
-      getActivity();
-    }, 5000);
-    
-
   }
- 
+
   for (let day = 1; day <= 31; day++) {
     if (day < 10) {
       day = "0" + day;
@@ -134,209 +83,178 @@ async function getActivity() {
       .doc(id)
       .get();
 
-    if (res.data() && res.data().logout_time) {
-      counter=1;
+    if (
+      res.data() &&
+      res.data().punched_times[res.data().punched_times.length - 1].logout_time
+    ) {
+      console.log(res.data());
+      let tstamp =
+        res.data().punched_times[res.data().punched_times.length - 1].tstamp;
+      counter = 1;
+      let display_type = "none";
       local_arr.push(res.data());
       window.localStorage.setItem("activity", JSON.stringify(local_arr));
       document.getElementById("loading").style.display = "none";
-      // let data = res.data();
-      // document.getElementById("activitys").innerHTML +=
-      //   `
-      //   <div class="list-item" data-id="19">
-      //   <div>
-      //     <a href="#" data-abc="true"
-      //       ><span class="w-48 avatar gd-warning" style="font-size:11px"
-      //         >` +
-      //   day +
-      //   " " +
-      //   month +
-      //   `</span
-      //       ></a>
-      //   </div>
-      //   <div class="flex">
-      //     <div class="item-except text-muted text-sm " style="font-size:11px">
-      //       Login Time : ` +
-      //   data.tstamp.split(" ")[4] +
-      //   `
-      //     </div>
-      //     <div class="item-except  text-sm " style="font-size:11px">
-      //       Logout Time : ` +
-      //   data.logout_time.split(" ")[4] +
-      //   `
-      //     </div>
-      //     <div class="item-except text-muted text-sm " style="font-size:11px">
-      //       Total Work Hour : ` +
-      //   data.total_Work_hour +
-      //   `
-      //     </div>
-      //   </div>
-      //   <div class="no-wrap">
-      //     <div
-      //       class="item-date text-muted text-sm d-md-block"
-      //     >
-      //       <button
-      //         class="btn btn-warning"
-      //         style="
-      //           font-size: 8px;
-      //           border-radius: 10px;
-      //           width: 100%;
-      //           height: 30px;
-      //           margin-left: 30%;
-      //         "
-      //         onclick=showAdjustDialog("` +
-      //   data.tstamp.split(/\s/).join("") +
-      //   `")
-      //       >
-      //         Adjust
-      //       </button>
-      //     </div>
-      //   </div>
-      // </div>
-      //   `;
-    } else {
-      // console.log(local_arr)
-     
+      let total_Work_hour = 0;
+
+      for (let k in res.data().punched_times) {
+        total_Work_hour += res.data().punched_times[k].total_Work_hour;
+      }
+      if (res.data().status && res.data().status == "adjusted") {
+        display_type = "block";
+      }
+
+      showData();
     }
-    if(counter==0){
-      document.getElementById("loading").style.display = "none";
-      document.getElementById("activitys").innerHTML =
-        "No activity found ! Use daily signin to create a activity . `<br>Refreshing....` ";
-    }
+
     //}
+  }
+  if (counter == 0) {
+    document.getElementById("loading").style.display = "none";
+    document.getElementById("activitys").innerHTML =
+      "No activity found ! Use daily signin to create a activity . ";
   }
 }
 setTimeout(function () {
   document.getElementById("loading").style.display = "block";
   getActivity();
 }, 200);
-
-function showAdjustDialog(tstamp) {
+var tot_hour_ = 0;
+var global_date;
+async function showAdjustDialog(tstamp) {
   idss = [];
   let data = JSON.parse(window.localStorage.getItem("activity"));
+  console.log(data);
   for (let i in data) {
-    if (data[i].tstamp.split(/\s/).join("") == tstamp) {
+    let l_tstamp =
+      data[i].punched_times[data[i].punched_times.length - 1].tstamp;
+      console.log(tstamp +"---"+l_tstamp.split(/\s/).join(""))
+    if (l_tstamp.split(/\s/).join("") == tstamp) {
       let val = data[i];
       global_data = val;
-      document.getElementById("dialog_adjust-label").innerHTML =
-        "Timesheet Adjustment";
-      document.getElementById("dialog_adjust-message").innerHTML =
-        `
-        <div class="wrap-input100 validate-input" data-validate="Days required">
-        <span class="label-input100">Total hours : (Current :` +
-        val.total_Work_hour +
-        ` )</span>
-        <input
-            class="input100"
-            type="number"
-            name="days"
-            required"
-            id="total"
-            placeholder="Overall Hours Spent"
-            required
-        />
-     
-        `;
-      for (let j in val.time_between_projects) {
-        idss.push(val.time_between_projects[j].project + "_" + j);
+      global_date = l_tstamp;
+      console.log(global_data);
+      document.getElementById("dialog_adjust-message").innerHTML=""
+      document.getElementById("dialog_adjust-label").innerHTML = "Activity";
+      for (let k in global_data.punched_times) {
+        console.log(global_data.punched_times);
+        let val = global_data;
+        let log_out_time;
+        console.log(val.punched_times[k]);
+
+        let login_time = val.punched_times[k].tstamp.split(" ")[4];
+        let tot_work_hour = val.punched_times[k].total_Work_hour;
+
+        if (tot_work_hour == undefined) {
+          tot_work_hour = "Active";
+        }
+        if (val.punched_times[k].logout_time == undefined) {
+          log_out_time = "Active";
+        } else {
+          log_out_time = val.punched_times[k].logout_time.split(" ")[4];
+        }
+        if (val.punched_times[k].total_Work_hour == undefined) {
+          val.punched_times[k].total_Work_hour = "Active";
+        }
+        console.log(val.punched_times[k]);
+        let t_b_p = val.punched_times[k].time_between_projects;
+        let details = "";
+        for (let l in t_b_p) {
+          details +=
+            t_b_p[l].project + " - " + t_b_p[l].hour_spent + " Hr." + "<br>";
+        }
+
         document.getElementById("dialog_adjust-message").innerHTML +=
           `
-            <div class="wrap-input100 validate-input" data-validate="Days required">
-            <span class="label-input100">` +
-          val.time_between_projects[j].project +
-          " (Current: " +
-          val.time_between_projects[j].hour_spent +
-          ") " +
-          `</span>
-            <br>
-            <input
-                class="input100"
-                type="number"
-                name="days"
-                required
-                id="` +
-          val.time_between_projects[j].project +
-          "_" +
-          j +
-          `"
-                placeholder="Hours spent on this project  "
-                required
-            />
-            </div>
-             <br>
-      `;
+        
+        <h6 style="float:right;font-size:13px;">Punch No. :` +
+          ++k +
+          `</h6>
+      <h6>Login-Time :` +
+          login_time +
+          `</h6>
+      <h6>Logout-Time :` +
+          log_out_time +
+          `</h6>
+      <h6>Total Time spent :` +
+          tot_work_hour +
+          ` Hours</h6>
+      
+        <button type="button" class="collapsible">Detailed View</button>
+        <div class="content">
+          <p id="detailed_view" style="font-size:12px">` +
+          details +
+          `</p>
+        </div>
+         <hr/>
+
+      </div>`;
+
+        $("#dialog_adjust").modal("show");
+        var coll = document.getElementsByClassName("collapsible");
+        var j;
+
+        for (j = 0; j < coll.length; j++) {
+          coll[j].addEventListener("click", function () {
+            this.classList.toggle("active");
+            var content = this.nextElementSibling;
+            if (content.style.maxHeight) {
+              content.style.maxHeight = null;
+            } else {
+              content.style.maxHeight = content.scrollHeight + "px";
+            }
+          });
+        }
       }
-
-      $("#dialog_adjust").modal("show");
-      document.getElementById("dialog_adjust-message").innerHTML += `
-        <span id="error_msg2" style="color:red;font-weight:700;display:none">Invalid distribution of hours</span>
-        `;
-    }
-  }
+    
+  
+    }}
 }
-async function adjust() {
-  console.log(global_data);
-  let date =
-    global_data.tstamp.split(" ")[2] +
-    " " +
-    global_data.tstamp.split(" ")[1] +
-    " " +
-    global_data.tstamp.split(" ")[3];
-  let new_arr = [];
-  let count = 0;
-  let total = parseInt(document.getElementById("total").value);
-  if(idss.length==0){
-    count=total
-  }
-  for (let i in idss) {
-    count += parseInt(document.getElementById(idss[i]).value);
-  }
-  console.log(count + "_" + total);
-  if (count == total) {
-    for (let i in idss) {
-      count += document.getElementById(idss[i]).value;
-      let obj1 = {
-        project: idss[i].split("_")[0],
-        hour_spent: parseInt(document.getElementById(idss[i]).value),
-      };
-      new_arr.push(obj1);
-    }
-    console.log(new_arr);
-    let data = {
-      time_between_projects_adjusted: new_arr,
-      total_Work_hour_adjusted: total,
-      adjusted_date: date,
-      id: window.localStorage.getItem("uid"),
-      fcm_token : JSON.parse(window.localStorage.getItem("data")).fcm_token
-    };
-    let res = await setDbData({
-      collectionName: "timesheet_adjustment",
-      docId: window.localStorage.getItem("uid"),
-      dataToUpdate: data,
-    }).then(function () {
-      document.getElementById("error_msg2").style.display = "block";
-      document.getElementById("error_msg2").innerHTML =
-        "✔️ Requested for adjustment ";
-      document.getElementById("error_msg2").style.color = "green";
-      setTimeout(function () {
-        $("#dialog_adjust").modal("hide");
-      }, 2500);
-    });
-    // await db
-    //   .collection("")
-    //   .doc(date)
-    //   .collection(window.localStorage.getItem("uid"))
-    //   .doc(window.localStorage.getItem("uid"))
-    //   .update(data)
-    //   .then(function () {
+// async function adjust() {
+//   let date =global_date
+//   let projects = [];
+//   let counter = 0;
+//   console.log(activity_data_arr)
+//   for (let i in activity_data_arr) {
+//     if (
+//       parseInt(
+//         document.getElementById(activity_data_arr[i].name + "_" + i).value
+//       ) > 0
+//     ) {
+//       counter += parseInt(
+//         document.getElementById(activity_data_arr[i].name + "_" + i).value
+//       );
+//       let obj = {
+//         project: activity_data_arr[i].name,
+//         hour_spent: parseInt(
+//           document.getElementById(activity_data_arr[i].name + "_" + i).value
+//         ),
+//       };
+//       projects.push(obj);
+//     }
+//   }
+//   console.log(counter+"-"+tot_hour_)
 
-    //   })
-    //   .catch(function () {
-    //     alert("error");
-    //   });
-  } else {
-    document.getElementById("error_msg2").style.display = "block";
-    setTimeout(function () {
-      document.getElementById("error_msg2").style.display = "none";
-    }, 1000);
-  }
-}
+//     console.log(projects);
+//     let data = {
+//       time_between_projects_adjusted: projects,
+//       total_Work_hour_adjusted: counter,
+//       adjusted_date: date,
+//       id: window.localStorage.getItem("uid"),
+//       fcm_token : JSON.parse(window.localStorage.getItem("data")).fcm_token
+//     };
+//     let res = await setDbData({
+//       collectionName: "timesheet_adjustment",
+//       docId: window.localStorage.getItem("uid"),
+//       dataToUpdate: data,
+//     }).then(function () {
+//       document.getElementById("error_msg2").style.display = "block";
+//       document.getElementById("error_msg2").innerHTML =
+//         "✔️ Requested for adjustment ";
+//       document.getElementById("error_msg2").style.color = "green";
+//       setTimeout(function () {
+//         $("#dialog_adjust").modal("hide");
+//       }, 2500);
+//     });
+
+// }

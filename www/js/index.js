@@ -37,9 +37,12 @@ function onDeviceReady() {
 
   function onBackKeyDown() {
     // Handle the back button
+    alert(88)
     if (window.location.href.includes("login.html")) navigator.app.exitApp();
     else if (!window.location.href.includes("employee.html"))
       window.open("./../employee/employee.html");
+    else if (window.location.href.includes("login.html"))
+      navigator.app.exitApp();
     else {
       navigator.app.exitApp();
     }

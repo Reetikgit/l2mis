@@ -269,7 +269,7 @@ a:not([href]):not([tabindex]):focus {
 .gd-warning {
     color: #fff;
     border: none;
-    background: green linear-gradient(45deg, #000000, green)
+    background: rgb(167, 156, 1) linear-gradient(45deg, #000000, rgb(189, 125, 173))
 }
 
 @media (min-width:992px) {
@@ -362,11 +362,21 @@ a:link {
     font-size: 15px;
   }
   
-   .collapsible:hover {
+  .active, .collapsible:hover {
     background-color: lightgray;
   }
   
- 
+  .collapsible:after {
+    content: '\002B';
+    color: #000000;
+    font-weight: bold;
+    float: right;
+    margin-left: 5px;
+  }
+  
+  .active:after {
+    content: "\2212";
+  }
   
   .content {
     padding: 0 18px;

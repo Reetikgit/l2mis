@@ -20,43 +20,66 @@ async function getStatus() {
   });
 
   let status = check_login_status.data;
+
   if (
-    check_login_status.data != undefined &&
-    check_login_status.data.logout_time == undefined
+    status != undefined &&
+    status.punched_times[status.punched_times.length-1].logout_time == undefined
   ) {
+
     let end = new Date().getTime();
-    let start = new Date(check_login_status.data.tstamp).getTime();
+    let start = new Date(status.punched_times[status.punched_times.length-1].tstamp).getTime();
     var difference = end - start; // This will give difference in milliseconds
     var resultInMinutes = Math.round(difference / 60000);
     document.getElementById("login").disabled = true;
     document.getElementById("log-off").disabled = false;
-    document.getElementById("login").innerHTML = "Logged In";
+    document.getElementById("login").innerHTML = "Punched In";
     window.localStorage.setItem("working_time", resultInMinutes);
   } else {
     document.getElementById("log-off").disabled = true;
+    document.getElementById("login").innerHTML = "Punch In";
     document.getElementById("login").disabled = false;
   }
   cordova.plugins.firebase.messaging.getToken().then(async function (token) {
     console.log("Got device token: ", token);
-    let data = {
-      fcm_token: token,
-    };
-    let res = await updateDbDoc({
-      collectionName: "employee",
-      docId: window.localStorage.getItem("uid"),
-      dataToUpdate: data,
-    });
-    await setDbData({
-      collectionName: "device_ids",
-      docId: window.localStorage.getItem("uid"),
-      dataToUpdate: data,
-    });
+    let saved_token=JSON.parse(window.localStorage.getItem("data")).fcm_token
+    if(saved_token==undefined){
+      let data = {
+        fcm_token: token,
+      };
+  
+      let res = await updateDbDoc({
+        collectionName: "employee",
+        docId: window.localStorage.getItem("uid"),
+        dataToUpdate: data,
+      });
+      await setDbData({
+        collectionName: "device_ids",
+        docId: window.localStorage.getItem("uid"),
+        dataToUpdate: data,
+      });
+    }else{
+      if(saved_token!=token){
+        navigator.notification.beep(2);
+        navigator.notification.alert(
+          'Please Login Through Your Respective Device!',  // message
+          alertDismissed,         // callback
+          'Error',            // title
+          'Log out'                  // buttonName
+        ); 
+      }
+    }
+
+    function alertDismissed(){
+      logout()
+    }
+
   });
+
   if (
     check_login_status.data != undefined &&
     check_login_status.data.logout_time != undefined
   ) {
-    document.getElementById("login").innerHTML = "Log In";
+    document.getElementById("login").innerHTML = "Punch In";
     document.getElementById("log-off").disabled = true;
     document.getElementById("login").disabled = false;
     return false;
@@ -74,7 +97,7 @@ setTimeout(function () {
   getTotalLeaves();
 }, 300);
 
-setInterval(function(){
+
   let working_time = window.localStorage.getItem("working_time")
   if(working_time !=undefined){
     document.getElementById("tot_hour_").innerHTML=working_time+" "+"Min";
@@ -82,13 +105,25 @@ setInterval(function(){
   }else{
 
   }
-},10000)
 function calculate_data() {
   leave_data = window.localStorage.getItem("leave_quantity");
   emp_leaves = window.localStorage.getItem("leaves");
   let working_time = window.localStorage.getItem("working_time")
+  let res=secondsToHms(working_time)
+  function secondsToHms(d) {
+    d = Number(d);
+    var h = Math.floor(d / 60);
+    var m = Math.floor(d % 60 );
+    var s = Math.floor(d % 3600 % 60);
+
+    var hDisplay = h > 0 ? h + (h == 1 ? " hour, " : " Hr : ") : "";
+    var mDisplay = m > 0 ? m + (m == 1 ? " minute " : " Min ") : "";
+    var sDisplay = s > 0 ? s + (s == 1 ? " second" : " seconds") : "";
+    return hDisplay + mDisplay 
+  }
+
   if(working_time !=undefined){
-    document.getElementById("tot_hour_").innerHTML=working_time+" "+"Min";
+    document.getElementById("tot_hour_").innerHTML=res
     $("#tot_hour_worked").attr("data-percentage", ((working_time*100)/540).toFixed(0));
   }else{
 

@@ -497,8 +497,13 @@ const logout = async () => {
       window.localStorage.removeItem("uname")
       window.localStorage.removeItem("data")
       window.localStorage.removeItem("activity")
+      window.localStorage.removeItem("team")
       console.log("User Logged Out!");
-      window.location="./../auth/login.html";
+      window.close();
+      
+      window.open(
+        "./../auth/login.html", "_blank");
+      navigator.app.exitApp();
     })
     .catch(function (error) {
       // An error happened.

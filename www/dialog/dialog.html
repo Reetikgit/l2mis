@@ -27,6 +27,40 @@
 </div> -->
 
 <!-- Modal -- Triggers-->
+
+<div
+  class="modal fade"
+  id="dialog_simple"
+  data-mdb-backdrop="static"
+  data-mdb-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="staticBackdropLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="dialog_simple-label">Event</h5>
+      </div>
+      <div
+        class="modal-body"
+        id="dialog_simple-message"
+        style="font-weight: 400; color: black"
+      ></div>
+
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-mdb-dismiss="modal"
+          onclick="closeDialog()"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 <div
   class="modal fade"
   id="dialog"
@@ -66,7 +100,7 @@
   aria-labelledby="staticBackdropLabel"
   aria-hidden="true"
 >
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-fullscreen-sm-down">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="dialog_cnf-label">Event</h5>
@@ -74,12 +108,13 @@
       <div class="modal-body" id="dialog_cnf-message" style="font-weight: 600;color: black;">Message</div>
 
       <div class="modal-footer">
+        <span id="error_msg" style="color:red;font-weight:700;display:none">Invalid distribution of hours</span>
         <button
           type="button"
           class="btn btn-secondary"
           onclick="authenticateLogOff()"
         >
-          Logg Off
+          Punch Out
         </button>
         <button
           type="button"
@@ -110,20 +145,20 @@
       <div class="modal-body" id="dialog_adjust-message" style="font-weight: 600;color: black;">Message</div>
 
       <div class="modal-footer">
-        <button
+        <!-- <button
           type="button"
           class="btn btn-warning"
           onclick="adjust()"
         >
           Adjust
-        </button>
+        </button> -->
         <button
           type="button"
           class="btn btn-danger"
           data-mdb-dismiss="modal"
           onclick="closeDialog()"
         >
-          Cancel
+          Close
         </button>
       </div>
     </div>

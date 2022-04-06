@@ -30,6 +30,10 @@ firebase.auth().onAuthStateChanged(async function (user) {
     window.location = "./../auth/login.html";
     window.localStorage.removeItem("uid")
   }
+  cordova.getAppVersion.getVersionNumber(function (version) {
+    version="1.0.4"
+    document.getElementById("version_number").innerHTML=version;
+  });
 });
 
 

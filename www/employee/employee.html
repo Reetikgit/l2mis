@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Employee Leave Management System</title>
+    <title>L2M MIS</title>
     <link rel="stylesheet" href="../assets/css/bootstrap.css" />
     <script defer src="../assets/fontawesome/js/all.min.js"></script>
     <link rel="stylesheet" href="../assets/vendors/chartjs/Chart.min.css" />
@@ -60,7 +60,7 @@
                   disabled="true"
                   onclick="openDailySign()"
                 >
-                  Log In
+                  Punch In
                 </button>
                 <button
                   type="button"
@@ -70,14 +70,14 @@
                   disabled="true"
                   onclick="displayDialog()"
                 >
-                  Log Off
+                  Punch Out
                 </button>
               </div>
             </div>
             <br />
             <div class="container">
               <div class="row">
-                <p>Total Hours Worked</p>
+                <p>Total Time Spent</p>
                 <div class="col">
                   <div class="container p-1">
                     <div class="progress" data-percentage="0" id="tot_hour_worked">
@@ -89,8 +89,8 @@
                       </span>
                       <div class="progress-value">
                         <div>
-                          <span id="tot_hour_">0 Min</span><br />
-                          <span>Today's</span>
+                          <span id="tot_hour_" style="font-size: 12px;">0 Min</span><br />
+                          <span></span>
                         </div>
                       </div>
                     </div>
@@ -98,8 +98,8 @@
                 </div>
               </div>
             </div>
-            <hr />
-            <div class="container">
+            
+            <div class="container" style="display: none;">
               <div class="row">
                 <p>Leave Status</p>
                 <div class="col">
@@ -148,7 +148,7 @@
               </div>
             </div>
             <br />
-            <div class="col-lg-6 mb-4">
+            <div class="col-lg-6 mb-4" style="display: none;">
               <div class="card shadow mb-4">
                 <div class="card-body" id="leave_types"></div>
               </div>

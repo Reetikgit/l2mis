@@ -156,6 +156,7 @@ ul.tasks .task-time {
   float: right;
   font-size: 13px;
   color: #888;
+  padding: 8px;
 }
 
 ul.tasks .task-cat {
