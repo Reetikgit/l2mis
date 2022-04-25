@@ -32,17 +32,17 @@ async function getStatus() {
     var resultInMinutes = Math.round(difference / 60000);
     document.getElementById("login").disabled = true;
     document.getElementById("log-off").disabled = false;
-    document.getElementById("login").innerHTML = "Punched In";
+    document.getElementById("login").innerHTML = "PUNCHED IN";
     window.localStorage.setItem("working_time", resultInMinutes);
   } else {
     document.getElementById("log-off").disabled = true;
-    document.getElementById("login").innerHTML = "Punch In";
+    document.getElementById("login").innerHTML = "PUNCH IN";
     document.getElementById("login").disabled = false;
   }
   cordova.plugins.firebase.messaging.getToken().then(async function (token) {
-    console.log("Got device token: ", token);
     let saved_token=JSON.parse(window.localStorage.getItem("data")).fcm_token
-    if(saved_token==undefined){
+   
+    if(saved_token==undefined || saved_token ==""){
       let data = {
         fcm_token: token,
       };
@@ -59,6 +59,8 @@ async function getStatus() {
       });
     }else{
       if(saved_token!=token){
+        console.log(token)
+        console.log(saved_token)
         navigator.notification.beep(2);
         navigator.notification.alert(
           'Please Login Through Your Respective Device!',  // message
@@ -139,7 +141,6 @@ function calculate_data() {
   $("#utilized_per").attr("data-percentage", utilized_per.toFixed(0));
 
   let leave_types = JSON.parse((JSON.parse(window.localStorage.getItem("data"))).leaves)
-  console.log(leave_types)
   document.getElementById("leave_types").innerHTML=''
   for(let m in leave_types){
     document.getElementById("leave_types").innerHTML+=`

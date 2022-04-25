@@ -69,17 +69,27 @@ function timestamphome() {
     ? document.getElementById("timer")
     : null;
   if (id != null) {
-    console.log(date.toLocaleTimeString().split(":")[0])
-    console.log(date.toLocaleTimeString().split(" ")[1])
-    if (date.toLocaleTimeString().split(" ")[1] == "pm" ||date.toLocaleTimeString().split(" ")[1] == "PM") {
+    if (date.toLocaleTimeString().split(" ")[1] == "pm" ||date.toLocaleTimeString().split(" ")[1] == "PM" ||date.toLocaleTimeString().split(" ")[1] == "Pm") {
       if (date.toLocaleTimeString().split(":")[0] < 4)
         id.innerHTML = "Good Afternoon ";
       else if (date.toLocaleTimeString().split(":")[0] == 12){
         id.innerHTML = "Good Afternoon ";
       }
       else id.innerHTML = "Good Evening ";
-    } else {
+    } else if (date.toLocaleTimeString().split(" ")[1] == "am" ||date.toLocaleTimeString().split(" ")[1] == "AM" ||date.toLocaleTimeString().split(" ")[1] == "Am")  {
       id.innerHTML = "Good Morning ";
+    }else{
+      let zone=parseInt(date.toLocaleTimeString().split(" ")[0]);
+      if(zone>=12 && zone<=15){
+        id.innerHTML= "Good Afternoon"
+      }else if(zone>15 && zone<24){
+        id.innerHTML= "Good Evening"
+      }else if(zone==00 || (zone >0 && zone<12)){
+        id.innerHTML= "Good Morning"
+      }else{
+        id.innerHTML= "Hello "
+      }
+    
     }
   }
   date = date.toUTCString().slice(5, 16);
@@ -149,7 +159,7 @@ async function displayDialog() {
   $("#dialog_cnf").modal("show");
 }
 async function displayActivity() {
-  let Dbdata = await getDbCollData("project");
+  let Dbdata = await getDbCollDataSort("project")
   let i = 0;
   activity_data_arr = [];
   Dbdata.data.map(async (d) => {
@@ -208,8 +218,6 @@ async function loggoff() {
   });
 
   let status = check_login_status.data;
-  console.log("0----------------------")
-  console.log(status)
   for (let i in status.punched_times) {
     new_punched_arr.push(status.punched_times[i]);
   }
@@ -224,10 +232,6 @@ async function loggoff() {
     punched_times:new_punched_arr,
     data :window.localStorage.getItem("data"),
   }
-  console.log("1----------------------")
-  console.log(data)
-  console.log("2----------------------")
-  console.log(data_notify)
   let uid = window.localStorage.getItem("uid");
   let timesheet_date =
     new Date().toString().split(" ")[1] +
@@ -261,8 +265,8 @@ async function loggoff() {
               projects[j].project == t_data.time_between_projects[i].project
             ) {
               t_data.time_between_projects[i].hour_spent =
-                parseInt(projects[j].hour_spent) +
-                parseInt(
+                parseFloat(projects[j].hour_spent) +
+                parseFloat(
                   timesheetdata.data().time_between_projects[i].hour_spent
                 );
             }
@@ -289,12 +293,10 @@ async function loggoff() {
         data2 = {
           data: window.localStorage.getItem("data"),
           total_Work_hour:
-            parseInt(total_Work_hour) +
-            parseInt(timesheetdata.data().total_Work_hour),
+            parseFloat(total_Work_hour) +
+            parseFloat(timesheetdata.data().total_Work_hour),
           time_between_projects: projects,
         };
-        console.log("3----------------------")
-        console.log(projects)
         await db
           .collection("timesheet_" + timesheet_date)
           .doc(uid)
@@ -347,7 +349,7 @@ function isAvailableSuccessCallback(result) {
   // isHardwareDetected:boolean, // Device has hardware fingerprint sensor.
   // hasEnrolledFingerprints:boolean // Device has any fingerprints enrolled.
   // }
-  console.log("FingerprintAuth available: " + JSON.stringify(result));
+  // console.log("FingerprintAuth available: " + JSON.stringify(result));
   if (result) {
     // See config object for required parameters
     var encryptConfig = {
@@ -371,8 +373,74 @@ function isAvailableSuccessCallback(result) {
     );
   }
 }
-function isAvailableError(message) {
+async function isAvailableError(message) {
   console.log("isAvailableError(): " + message);
+  window.cordova.plugins.PinCheck.isPinSetup(async function(success){
+    console.log("pin is setup.");
+    let new_punched_arr = [];
+    // document.getElementById("updating").style.display = "block";
+    let check_login_status = await getDbSubCollData({
+      collectionName: "attendance",
+      docId: new Date().toUTCString().slice(5, 16),
+      subCollName: window.localStorage.getItem("uid"),
+      subDocId: window.localStorage.getItem("uid"),
+    });
+
+    let status = check_login_status.data;
+    if (status != undefined) {
+      for (let i in status.punched_times) {
+        new_punched_arr.push(status.punched_times[i]);
+      }
+    }
+
+    let uid = window.localStorage.getItem("uid");
+    let ename = window.localStorage.getItem("uname");
+    let punch_in_arr = new_punched_arr;    
+    if(lat==undefined){
+      lat=" "
+    }
+    if(long==undefined){
+      long=" "
+    }
+    let punched_data = {
+      login_time: date1.toLocaleTimeString(),
+      latitude: lat,
+      tstamp: new Date().toString(),
+      longitude: long,
+    };
+    punch_in_arr.push(punched_data);
+    data = {
+      name: ename,
+      emp_id: uid,
+      punched_times: punch_in_arr,
+    };
+    data_notify = {
+      name: ename,
+      emp_id: uid,
+      data :window.localStorage.getItem("data"),
+      punched_times: punch_in_arr,
+    };
+    await db
+      .collection("attendance")
+      .doc(date)
+      .collection(uid)
+      .doc(uid)
+      .set(data)
+      .then(async function () {
+        await db
+        .collection("notify_to_mentor")
+        .doc(uid).set(data_notify).then(function(){
+          window.location = "../employee/employee.html";
+        })
+      
+      })
+      .catch(function () {
+        alert("error");
+      });
+  }, function(fail){
+    alert("Please setup a pin/password.");
+  });
+  
 }
 
 //  Fingerprint verification; if you need to add a diploma, you need to pass the ClientID, UseName, Password.
@@ -388,7 +456,7 @@ async function encryptSuccessCallback(result) {
   // }
   //console.log("successCallback(): " + JSON.stringify(result));
   if (result.withFingerprint) {
-    console.log("Successfully encrypted credentials.");
+    // console.log("Successfully encrypted credentials.");
     // console.log("Encrypted credentials: " + result.token);
     let new_punched_arr = [];
     // document.getElementById("updating").style.display = "block";
@@ -400,7 +468,6 @@ async function encryptSuccessCallback(result) {
     });
 
     let status = check_login_status.data;
-    console.log(status);
     if (status != undefined) {
       for (let i in status.punched_times) {
         new_punched_arr.push(status.punched_times[i]);
@@ -409,7 +476,6 @@ async function encryptSuccessCallback(result) {
 
     let uid = window.localStorage.getItem("uid");
     let ename = window.localStorage.getItem("uname");
-    console.log(uid,ename)
     let punch_in_arr = new_punched_arr;    
     if(lat==undefined){
       lat=" "
@@ -423,21 +489,18 @@ async function encryptSuccessCallback(result) {
       tstamp: new Date().toString(),
       longitude: long,
     };
-    console.log(punched_data)
     punch_in_arr.push(punched_data);
     data = {
       name: ename,
       emp_id: uid,
       punched_times: punch_in_arr,
     };
-    console.log(data)
     data_notify = {
       name: ename,
       emp_id: uid,
       data :window.localStorage.getItem("data"),
       punched_times: punch_in_arr,
     };
-    console.log(data_notify)
     await db
       .collection("attendance")
       .doc(date)
@@ -478,14 +541,12 @@ async function encryptSuccessCallback(result) {
       emp_id: uid,
       punched_times: punch_in_arr,
     };
-    console.log(data)
     let data_notify = {
       name: ename,
       emp_id: uid,
       data :window.localStorage.getItem("data"),
       punched_times: punch_in_arr,
     };
-    console.log(data_notify)
     await db
       .collection("attendance")
       .doc(date)
@@ -534,16 +595,16 @@ function authenticateLogOff() {
     }
     for (let i in activity_data_arr) {
       if (
-        parseInt(
+        parseFloat(
           document.getElementById(activity_data_arr[i].name + "_" + i).value
         ) > 0
       ) {
-        counter += parseInt(
+        counter += parseFloat(
           document.getElementById(activity_data_arr[i].name + "_" + i).value
         );
         let obj = {
           project: activity_data_arr[i].name,
-          hour_spent: parseInt(
+          hour_spent: parseFloat(
             document.getElementById(activity_data_arr[i].name + "_" + i).value
           ),
         };
@@ -572,7 +633,7 @@ function isAvailableSuccessCallbackLogOff(result) {
   // isHardwareDetected:boolean, // Device has hardware fingerprint sensor.
   // hasEnrolledFingerprints:boolean // Device has any fingerprints enrolled.
   // }
-  console.log("FingerprintAuth available: " + JSON.stringify(result));
+  // console.log("FingerprintAuth available: " + JSON.stringify(result));
   if (result) {
     // See config object for required parameters
     var encryptConfig = {
@@ -598,6 +659,8 @@ function isAvailableSuccessCallbackLogOff(result) {
 }
 function isAvailableErrorLogOff(message) {
   console.log("isAvailableError(): " + message);
+  loggoff()
+
 }
 
 //  Fingerprint verification; if you need to add a diploma, you need to pass the ClientID, UseName, Password.
@@ -611,10 +674,8 @@ function encryptSuccessCallbackLogOff(result) {
   //  WITHBACKUP: BOOLEAN, // Verified using a recession scheme.
   //  Token: boolean // Verify successful token.
   // }
-  console.log("successCallback(): " + JSON.stringify(result));
+  // console.log("successCallback(): " + JSON.stringify(result));
   if (result.withFingerprint) {
-    console.log("Successfully encrypted credentials.");
-    console.log("Encrypted credentials: " + result.token);
     loggoff();
   } else if (result.withBackup) {
     console.log("Authenticated with backup password");

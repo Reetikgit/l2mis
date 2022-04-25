@@ -362,6 +362,33 @@ a:link {
     font-size: 15px;
   }
   
+   .collapsible:hover {
+    background-color: lightgray;
+  }
+  
+ 
+  
+  .content {
+    padding: 0 18px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+    background-color: #f1f1f1;
+  }
+/* .collapsible {
+    background-color: #ffffff;
+    color: black;
+    cursor: pointer;
+    border-radius: 2px;
+    padding: 5px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    border: 1px solid black;
+    font-size: 15px;
+  }
+  
   .active, .collapsible:hover {
     background-color: lightgray;
   }
@@ -384,4 +411,4 @@ a:link {
     overflow: hidden;
     transition: max-height 0.2s ease-out;
     background-color: #f1f1f1;
-  }
+  } */

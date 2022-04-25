@@ -291,6 +291,37 @@ async function getDbCollData(collectionName) {
     }
   }
 }
+async function getDbCollDataSort(collectionName) {
+  // console.log('getDbData :', collectionName, docId);
+  try {
+    const ref = await db.collection(collectionName).orderBy("name", "desc");;
+    const snaps = await ref.get();
+    const docs = await snaps.docs;
+    const data = docs.map((d) => {
+      const data = d.data();
+      return { data: data, _id: d.id };
+    }).reverse();
+    return {
+      status: true,
+      data,
+      message: "Successfully fetched the collection data",
+    };
+  } catch (error) {
+    console.error(error);
+    if (retryDbCollData < 2) {
+      retryDbCollData++;
+      // alert(
+      //   `Attempt: ${retryDbCollData} Unable to fetch the collection data. Reason: ${error.message}`
+      // );
+      getDbCollDataSort({ collectionName });
+    } else {
+      return {
+        status: false,
+        message: `Unable to fetch user details. Reson: ${error.message}`,
+      };
+    }
+  }
+}
 
 // /////////////////////////
 // create doc
@@ -460,10 +491,10 @@ const login = async ({ email = false, password = false }) => {
         message: "User Not Found",
         errorCode:error.code
       };
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      console.log(errorCode);
-      console.log(errorMessage);
+      // var errorCode = error.code;
+      // var errorMessage = error.message;
+      // console.log(errorCode);
+      // console.log(errorMessage);
     });
 };
 const check_user = async (user) => {
@@ -498,7 +529,6 @@ const logout = async () => {
       window.localStorage.removeItem("data")
       window.localStorage.removeItem("activity")
       window.localStorage.removeItem("team")
-      console.log("User Logged Out!");
       window.close();
       
       window.open(

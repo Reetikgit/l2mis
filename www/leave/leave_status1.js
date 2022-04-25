@@ -14,11 +14,9 @@ const displayLeave_Status = async (e) => {
   Dbdata.data.map(async (d) => {
     if (d._id == window.localStorage.getItem("uid")) {
       let objData = d.data;
-      console.log(objData);
       let color = "red";
       for (let i = objData.leaves.length - 1; i >= 0; i--) {
         let data = objData.leaves[i];
-        console.log(data);
         if (data.status == "confirmed") {
           data.status = "Accepted";
           color = "green";

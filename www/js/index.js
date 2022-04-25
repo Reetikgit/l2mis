@@ -27,7 +27,7 @@ document.addEventListener("deviceready", onDeviceReady, false);
 // }
 function onDeviceReady() {
   // Cordova is now initialized. Have fun!
-
+  screen.orientation.lock('portrait');
   console.log("Running cordova-" + cordova.platformId + "@" + cordova.version);
   // document.addEventListener("backbutton", onBackButtonTapped, false);
   if (cordova.platformId == "android") {
@@ -37,7 +37,6 @@ function onDeviceReady() {
 
   function onBackKeyDown() {
     // Handle the back button
-    alert(88)
     if (window.location.href.includes("login.html")) navigator.app.exitApp();
     else if (!window.location.href.includes("employee.html"))
       window.open("./../employee/employee.html");

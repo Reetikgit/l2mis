@@ -44,7 +44,7 @@ $(function() {
   }
   document.getElementById("image").src=data.image
   document.getElementById("name").innerHTML=data.fname +" "+data.lname
-  document.getElementById("desig").innerHTML=data.designation
+  // document.getElementById("desig").innerHTML=data.designation
   document.getElementById("email").innerHTML=data.email
   document.getElementById("joining").innerHTML=data.joining_date
   document.getElementById("type").innerHTML=data.emp_type

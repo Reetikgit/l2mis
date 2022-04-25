@@ -4,6 +4,12 @@ async function getTeam() {
   if (stored_Data) {
     for (let i in stored_Data) {
       let val = stored_Data[i];
+      let margin;
+      if(val.lname.length+val.fname.length>13){
+        margin=30;
+      }else{
+        margin=60;
+      }
       document.getElementById("teams").innerHTML +=
         `
         <div class="list-item" data-id="19">
@@ -43,7 +49,7 @@ async function getTeam() {
                 border-radius: 11px;
                 width: 100%;
                 height: 30px;
-                margin-left: 60%;
+                margin-left: `+margin+`%;
                
                 "
               onclick=showDialog("` +
@@ -74,9 +80,15 @@ async function getTeam() {
       for (let i in objData.reportsTo) {
         if (objData.reportsTo[i].split("_")[1] == id) {
           team.push(objData);
+          let margin;
+          if(objData.lname.length+objData.fname.length>13){
+            margin=30;
+          }else{
+            margin=60;
+          }
           document.getElementById("teams").innerHTML +=
             `
-          <div class="list-item" data-id="19">
+          <div class="flex list-item" data-id="19">
           <div>
             <a href="#" data-abc="true"
               ><span class="w-48 avatar gd-warning" style="font-size:11px"
@@ -113,7 +125,7 @@ async function getTeam() {
                   border-radius: 11px;
                   width: 100%;
                   height: 30px;
-                  margin-left: 60%;
+                  margin-left: `+margin+`%;
                  
                   "
                 onclick=showDialog("` +
@@ -161,7 +173,6 @@ async function showDialog(id) {
       if (res1.data()) {
         let login_status = "";
         let val = res1.data();
-        console.log(val);
         document.getElementById("dialog_simple-label").innerHTML =
           "Punch Status of : " + " " + val.name;
 
@@ -181,7 +192,6 @@ async function showDialog(id) {
           if (val.punched_times[i].total_Work_hour == undefined) {
             val.punched_times[i].total_Work_hour = "Active";
           }
-          console.log(val.punched_times[i])
           let t_b_p=val.punched_times[i].time_between_projects
           let details=""
           for(let k in t_b_p){
@@ -207,9 +217,9 @@ async function showDialog(id) {
             <div class="content">
               <p id="detailed_view" style="font-size:12px">`+details+`</p>
             </div>
-             <hr/>
+            <hr/>
 
-          </div>
+            </div>
           `;
           
           counter++;

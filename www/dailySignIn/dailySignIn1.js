@@ -29,7 +29,6 @@ setTimeout(async function () {
   
     let status = check_login_status.data;
     if (check_login_status.data) {
-      console.log(check_login_status.data)
       //  window.location = "../employee/employee.html";
     }
   },10);

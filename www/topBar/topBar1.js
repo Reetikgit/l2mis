@@ -4,8 +4,6 @@ const displaynotification = async (e) => {
     Dbdata.data.map(async (d) => {
     if(d._id==window.localStorage.getItem("uid")){
         let objData = d.data;
-        console.log(objData)
-             
                 count++;
                 document.getElementById("notify_count").innerHTML = count;
                 document.getElementById("content").innerHTML += `

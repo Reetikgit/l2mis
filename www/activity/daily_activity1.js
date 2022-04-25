@@ -20,7 +20,7 @@ async function getActivity() {
         let val = stored_Data[i];
         let total_Work_hour = 0;
         let day = val.punched_times[0].tstamp.split(" ")[2];
-        let tstamp = val.punched_times[val.punched_times.length-1].tstamp;
+        let tstamp = val.punched_times[val.punched_times.length - 1].tstamp;
         for (let k in val.punched_times) {
           total_Work_hour += val.punched_times[k].total_Work_hour;
         }
@@ -87,7 +87,6 @@ async function getActivity() {
       res.data() &&
       res.data().punched_times[res.data().punched_times.length - 1].logout_time
     ) {
-      console.log(res.data());
       let tstamp =
         res.data().punched_times[res.data().punched_times.length - 1].tstamp;
       counter = 1;
@@ -124,23 +123,18 @@ var global_date;
 async function showAdjustDialog(tstamp) {
   idss = [];
   let data = JSON.parse(window.localStorage.getItem("activity"));
-  console.log(data);
   for (let i in data) {
     let l_tstamp =
       data[i].punched_times[data[i].punched_times.length - 1].tstamp;
-      console.log(tstamp +"---"+l_tstamp.split(/\s/).join(""))
     if (l_tstamp.split(/\s/).join("") == tstamp) {
       let val = data[i];
       global_data = val;
       global_date = l_tstamp;
-      console.log(global_data);
-      document.getElementById("dialog_adjust-message").innerHTML=""
+      document.getElementById("dialog_adjust-message").innerHTML = "";
       document.getElementById("dialog_adjust-label").innerHTML = "Activity";
       for (let k in global_data.punched_times) {
-        console.log(global_data.punched_times);
         let val = global_data;
         let log_out_time;
-        console.log(val.punched_times[k]);
 
         let login_time = val.punched_times[k].tstamp.split(" ")[4];
         let tot_work_hour = val.punched_times[k].total_Work_hour;
@@ -156,7 +150,7 @@ async function showAdjustDialog(tstamp) {
         if (val.punched_times[k].total_Work_hour == undefined) {
           val.punched_times[k].total_Work_hour = "Active";
         }
-        console.log(val.punched_times[k]);
+
         let t_b_p = val.punched_times[k].time_between_projects;
         let details = "";
         for (let l in t_b_p) {
@@ -206,9 +200,8 @@ async function showAdjustDialog(tstamp) {
           });
         }
       }
-    
-  
-    }}
+    }
+  }
 }
 // async function adjust() {
 //   let date =global_date
