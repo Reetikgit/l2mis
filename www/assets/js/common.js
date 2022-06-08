@@ -16,6 +16,10 @@ let total_Work_hour = 0;
 var emp_data;
 let projects = [];
 var activity_data_arr = [];
+let old_punch_out = "false";
+let old_date;
+let old_logout_hours;
+let old_logout_mins;
 setTimeout(function () {
   $(".swipe-area").swipe({
     swipeStatus: function (
@@ -69,27 +73,33 @@ function timestamphome() {
     ? document.getElementById("timer")
     : null;
   if (id != null) {
-    if (date.toLocaleTimeString().split(" ")[1] == "pm" ||date.toLocaleTimeString().split(" ")[1] == "PM" ||date.toLocaleTimeString().split(" ")[1] == "Pm") {
+    if (
+      date.toLocaleTimeString().split(" ")[1] == "pm" ||
+      date.toLocaleTimeString().split(" ")[1] == "PM" ||
+      date.toLocaleTimeString().split(" ")[1] == "Pm"
+    ) {
       if (date.toLocaleTimeString().split(":")[0] < 4)
         id.innerHTML = "Good Afternoon ";
-      else if (date.toLocaleTimeString().split(":")[0] == 12){
+      else if (date.toLocaleTimeString().split(":")[0] == 12) {
         id.innerHTML = "Good Afternoon ";
-      }
-      else id.innerHTML = "Good Evening ";
-    } else if (date.toLocaleTimeString().split(" ")[1] == "am" ||date.toLocaleTimeString().split(" ")[1] == "AM" ||date.toLocaleTimeString().split(" ")[1] == "Am")  {
+      } else id.innerHTML = "Good Evening ";
+    } else if (
+      date.toLocaleTimeString().split(" ")[1] == "am" ||
+      date.toLocaleTimeString().split(" ")[1] == "AM" ||
+      date.toLocaleTimeString().split(" ")[1] == "Am"
+    ) {
       id.innerHTML = "Good Morning ";
-    }else{
-      let zone=parseInt(date.toLocaleTimeString().split(" ")[0]);
-      if(zone>=12 && zone<=15){
-        id.innerHTML= "Good Afternoon"
-      }else if(zone>15 && zone<24){
-        id.innerHTML= "Good Evening"
-      }else if(zone==00 || (zone >0 && zone<12)){
-        id.innerHTML= "Good Morning"
-      }else{
-        id.innerHTML= "Hello "
+    } else {
+      let zone = parseInt(date.toLocaleTimeString().split(" ")[0]);
+      if (zone >= 12 && zone <= 15) {
+        id.innerHTML = "Good Afternoon";
+      } else if (zone > 15 && zone < 24) {
+        id.innerHTML = "Good Evening";
+      } else if (zone == 00 || (zone > 0 && zone < 12)) {
+        id.innerHTML = "Good Morning";
+      } else {
+        id.innerHTML = "Hello ";
       }
-    
     }
   }
   date = date.toUTCString().slice(5, 16);
@@ -127,12 +137,38 @@ function onError(error) {
   // getLocation()
 }
 var hours, minutes;
-async function displayDialog() {
+async function displayDialog(login_Time, logout_Time,day1) {
   //location.href = "#logoff";
-
+  
   await getStatus();
-  hours = Math.floor(window.localStorage.getItem("working_time") / 60);
-  minutes = window.localStorage.getItem("working_time") % 60;
+  if (login_Time != "" && logout_Time != "") {
+    let login_time_hours = login_Time.split(":")[0];
+    let login_time_min = login_Time.split(":")[1];
+    login_time_hours = parseInt(login_time_hours);
+    login_time_min = parseInt(login_time_min);
+    if (login_time_min > 50) {
+      login_time_hours += 1;
+    }
+    let logout_time_hours = logout_Time.split(":")[0];
+    let logout_time_min = logout_Time.split(":")[1];
+    old_logout_hours=logout_time_hours;
+    old_logout_mins=logout_time_min;
+    logout_time_hours = parseInt(logout_time_hours);
+    logout_time_min = parseInt(logout_time_min);
+    if (logout_time_min > 30) {
+      logout_time_hours += 1;
+    }
+
+    hours = logout_time_hours - login_time_hours;
+
+    minutes = 0;
+    old_punch_out = "true";
+    old_date=day1
+  } else {
+    old_punch_out = "false";
+    hours = Math.floor(window.localStorage.getItem("working_time") / 60);
+    minutes = window.localStorage.getItem("working_time") % 60;
+  }
 
   document.getElementById("dialog_cnf-label").innerHTML = "Punch Out";
   document.getElementById("dialog_cnf-message").innerHTML =
@@ -159,7 +195,7 @@ async function displayDialog() {
   $("#dialog_cnf").modal("show");
 }
 async function displayActivity() {
-  let Dbdata = await getDbCollDataSort("project")
+  let Dbdata = await getDbCollDataSort("project");
   let i = 0;
   activity_data_arr = [];
   Dbdata.data.map(async (d) => {
@@ -205,137 +241,270 @@ function closeDialog() {
   $("#dialog").modal("hide");
   $("#dialog_adjust").modal("hide");
   $("#dialog_simple").modal("hide");
+  $("#dialog_logout_time").modal("hide");
 }
 
 async function loggoff() {
-  let new_punched_arr = [];
-  document.getElementById("updating").style.display = "block";
-  let check_login_status = await getDbSubCollData({
-    collectionName: "attendance",
-    docId: new Date().toUTCString().slice(5, 16),
-    subCollName: window.localStorage.getItem("uid"),
-    subDocId: window.localStorage.getItem("uid"),
-  });
+  if (old_punch_out == "false") {
+    let new_punched_arr = [];
+    document.getElementById("updating").style.display = "block";
+    let check_login_status = await getDbSubCollData({
+      collectionName: "attendance",
+      docId: new Date().toUTCString().slice(5, 16),
+      subCollName: window.localStorage.getItem("uid"),
+      subDocId: window.localStorage.getItem("uid"),
+    });
 
-  let status = check_login_status.data;
-  for (let i in status.punched_times) {
-    new_punched_arr.push(status.punched_times[i]);
-  }
-  new_punched_arr[new_punched_arr.length - 1].logout_time =
-    new Date().toString();
-  new_punched_arr[new_punched_arr.length - 1].total_Work_hour = total_Work_hour;
-  new_punched_arr[new_punched_arr.length - 1].time_between_projects = projects;
-  data = {
-    punched_times: new_punched_arr,
-  };
-  data_notify={
-    punched_times:new_punched_arr,
-    data :window.localStorage.getItem("data"),
-  }
-  let uid = window.localStorage.getItem("uid");
-  let timesheet_date =
-    new Date().toString().split(" ")[1] +
-    "_" +
-    new Date().toString().split(" ")[3];
-  await db
-    .collection("attendance")
-    .doc(date)
-    .collection(uid)
-    .doc(uid)
-    .update(data)
-    .then(async function () {
-      let timesheetdata = await db
-        .collection("timesheet_" + timesheet_date)
-        .doc(uid)
-        .get();
-      let data2;
-      let t_data = timesheetdata.data();
-      let timsheet_names =[];
-      let attendance_names=[];
-      if (t_data) {
-        for (let i in t_data.time_between_projects) {
-          timsheet_names.push(t_data.time_between_projects[i].project)
-        }
-        for (let i in projects) {
-         attendance_names.push(projects[i].project)
-        }
-        for (let i in t_data.time_between_projects) {
-          for (let j in projects) {
-            if (
-              projects[j].project == t_data.time_between_projects[i].project
-            ) {
-              t_data.time_between_projects[i].hour_spent =
-                parseFloat(projects[j].hour_spent) +
-                parseFloat(
-                  timesheetdata.data().time_between_projects[i].hour_spent
-                );
-            }
-          }
-        }
- 
-
-        for (let i = 0; i < attendance_names.length; i++){
-            if (timsheet_names.indexOf(attendance_names[i]) === -1) {
-               
-                let index=attendance_names.indexOf(attendance_names[i])
-                let objs = {
-                  hour_spent : projects[index].hour_spent,
-                  project : attendance_names[i]
-                }
-                
-                t_data.time_between_projects.push(objs)
-         
-              
-            }
-        }
-                
-        projects = t_data.time_between_projects;
-        data2 = {
-          data: window.localStorage.getItem("data"),
-          total_Work_hour:
-            parseFloat(total_Work_hour) +
-            parseFloat(timesheetdata.data().total_Work_hour),
-          time_between_projects: projects,
-        };
-        await db
+    let status = check_login_status.data;
+    for (let i in status.punched_times) {
+      new_punched_arr.push(status.punched_times[i]);
+    }
+    new_punched_arr[new_punched_arr.length - 1].logout_time =
+      new Date().toString();
+    new_punched_arr[new_punched_arr.length - 1].total_Work_hour =
+      total_Work_hour;
+    new_punched_arr[new_punched_arr.length - 1].time_between_projects =
+      projects;
+    data = {
+      punched_times: new_punched_arr,
+    };
+    data_notify = {
+      punched_times: new_punched_arr,
+      data: window.localStorage.getItem("data"),
+    };
+    let uid = window.localStorage.getItem("uid");
+    let timesheet_date =
+      new Date().toString().split(" ")[1] +
+      "_" +
+      new Date().toString().split(" ")[3];
+    await db
+      .collection("attendance")
+      .doc(date)
+      .collection(uid)
+      .doc(uid)
+      .update(data)
+      .then(async function () {
+        let timesheetdata = await db
           .collection("timesheet_" + timesheet_date)
           .doc(uid)
-          .update(data2)
-          .then(async function () {
-            await db
-             .collection("notify_to_mentor")
-             .doc(uid)
-             .update(data_notify).then(function(){
-              $("#dialog_cnf").modal("hide");
+          .get();
+        let data2;
+        let t_data = timesheetdata.data();
+        let timsheet_names = [];
+        let attendance_names = [];
+        if (t_data) {
+          for (let i in t_data.time_between_projects) {
+            timsheet_names.push(t_data.time_between_projects[i].project);
+          }
+          for (let i in projects) {
+            attendance_names.push(projects[i].project);
+          }
+          for (let i in t_data.time_between_projects) {
+            for (let j in projects) {
+              if (
+                projects[j].project == t_data.time_between_projects[i].project
+              ) {
+                t_data.time_between_projects[i].hour_spent =
+                  parseFloat(projects[j].hour_spent) +
+                  parseFloat(
+                    timesheetdata.data().time_between_projects[i].hour_spent
+                  );
+              }
+            }
+          }
 
-              document.getElementById("updating").style.display = "none";
-              getStatus();
-             })
-        
-          })
-          .catch(function () {
-            alert("error22");
+          for (let i = 0; i < attendance_names.length; i++) {
+            if (timsheet_names.indexOf(attendance_names[i]) === -1) {
+              let index = attendance_names.indexOf(attendance_names[i]);
+              let objs = {
+                hour_spent: projects[index].hour_spent,
+                project: attendance_names[i],
+              };
+
+              t_data.time_between_projects.push(objs);
+            }
+          }
+
+          projects = t_data.time_between_projects;
+          data2 = {
+            data: window.localStorage.getItem("data"),
+            total_Work_hour:
+              parseFloat(total_Work_hour) +
+              parseFloat(timesheetdata.data().total_Work_hour),
+            time_between_projects: projects,
+          };
+          await db
+            .collection("timesheet_" + timesheet_date)
+            .doc(uid)
+            .update(data2)
+            .then(async function () {
+              await db
+                .collection("notify_to_mentor")
+                .doc(uid)
+                .update(data_notify)
+                .then(function () {
+                  $("#dialog_cnf").modal("hide");
+
+                  document.getElementById("updating").style.display = "none";
+                  window.location.reload();
+                  getStatus();
+                });
+            })
+            .catch(function () {
+              alert("error22");
+            });
+        } else {
+          data2 = {
+            data: window.localStorage.getItem("data"),
+            total_Work_hour: total_Work_hour,
+            time_between_projects: projects,
+          };
+          let res = await setDbData({
+            collectionName: "timesheet_" + timesheet_date,
+            docId: uid,
+            dataToUpdate: data2,
+          }).then(function () {
+            $("#dialog_cnf").modal("hide");
+            document.getElementById("updating").style.display = "none";
+            getStatus();
           });
-      } else {
-        data2 = {
-          data: window.localStorage.getItem("data"),
-          total_Work_hour: total_Work_hour,
-          time_between_projects: projects,
-        };
-        let res = await setDbData({
-          collectionName: "timesheet_" + timesheet_date,
-          docId: uid,
-          dataToUpdate: data2,
-        }).then(function () {
-          $("#dialog_cnf").modal("hide");
-          document.getElementById("updating").style.display = "none";
-          getStatus();
-        });
-      }
-    })
-    .catch(function () {
-      alert("error");
+        }
+      })
+      .catch(function () {
+        alert("error");
+      });
+  }else if(old_punch_out=="true"){
+    let new_punched_arr = [];
+    let date=old_date
+    document.getElementById("updating").style.display = "block";
+    let check_login_status = await getDbSubCollData({
+      collectionName: "attendance",
+      docId: date,
+      subCollName: window.localStorage.getItem("uid"),
+      subDocId: window.localStorage.getItem("uid"),
     });
+  
+    let status = check_login_status.data;
+    for (let i in status.punched_times) {
+      new_punched_arr.push(status.punched_times[i]);
+    }
+    new_punched_arr[new_punched_arr.length - 1].logout_time =
+      "* * * * "+old_logout_hours+":"+old_logout_mins+":"+"00";
+    new_punched_arr[new_punched_arr.length - 1].total_Work_hour = total_Work_hour;
+    new_punched_arr[new_punched_arr.length - 1].time_between_projects = projects;
+    data = {
+      punched_times: new_punched_arr,
+    };
+    data_notify={
+      punched_times:new_punched_arr,
+      data :window.localStorage.getItem("data"),
+    }
+    let uid = window.localStorage.getItem("uid");
+    let timesheet_date =
+      new Date().toString().split(" ")[1] +
+      "_" +
+      new Date().toString().split(" ")[3];
+    await db
+      .collection("attendance")
+      .doc(date)
+      .collection(uid)
+      .doc(uid)
+      .update(data)
+      .then(async function () {
+        let timesheetdata = await db
+          .collection("timesheet_" + timesheet_date)
+          .doc(uid)
+          .get();
+        let data2;
+        let t_data = timesheetdata.data();
+        let timsheet_names =[];
+        let attendance_names=[];
+        if (t_data) {
+          for (let i in t_data.time_between_projects) {
+            timsheet_names.push(t_data.time_between_projects[i].project)
+          }
+          for (let i in projects) {
+           attendance_names.push(projects[i].project)
+          }
+          for (let i in t_data.time_between_projects) {
+            for (let j in projects) {
+              if (
+                projects[j].project == t_data.time_between_projects[i].project
+              ) {
+                t_data.time_between_projects[i].hour_spent =
+                  parseFloat(projects[j].hour_spent) +
+                  parseFloat(
+                    timesheetdata.data().time_between_projects[i].hour_spent
+                  );
+              }
+            }
+          }
+   
+  
+          for (let i = 0; i < attendance_names.length; i++){
+              if (timsheet_names.indexOf(attendance_names[i]) === -1) {
+                 
+                  let index=attendance_names.indexOf(attendance_names[i])
+                  let objs = {
+                    hour_spent : projects[index].hour_spent,
+                    project : attendance_names[i]
+                  }
+                  
+                  t_data.time_between_projects.push(objs)
+           
+                
+              }
+          }
+                  
+          projects = t_data.time_between_projects;
+          data2 = {
+            data: window.localStorage.getItem("data"),
+            total_Work_hour:
+              parseFloat(total_Work_hour) +
+              parseFloat(timesheetdata.data().total_Work_hour),
+            time_between_projects: projects,
+          };
+          await db
+            .collection("timesheet_" + timesheet_date)
+            .doc(uid)
+            .update(data2)
+            .then(async function () {
+              await db
+               .collection("notify_to_mentor")
+               .doc(uid)
+               .update(data_notify).then(function(){
+                $("#dialog_cnf").modal("hide");
+  
+                document.getElementById("updating").style.display = "none";
+                window.location.reload();
+                getStatus();
+               })
+          
+            })
+            .catch(function () {
+              alert("error22");
+            });
+        } else {
+          data2 = {
+            data: window.localStorage.getItem("data"),
+            total_Work_hour: total_Work_hour,
+            time_between_projects: projects,
+          };
+          let res = await setDbData({
+            collectionName: "timesheet_" + timesheet_date,
+            docId: uid,
+            dataToUpdate: data2,
+          }).then(function () {
+            $("#dialog_cnf").modal("hide");
+            document.getElementById("updating").style.display = "none";
+            getStatus();
+          });
+        }
+      })
+      .catch(function () {
+        alert("error");
+      });
+  }
 }
 
 ////// Finger Print  Code //////
@@ -375,72 +544,75 @@ function isAvailableSuccessCallback(result) {
 }
 async function isAvailableError(message) {
   console.log("isAvailableError(): " + message);
-  window.cordova.plugins.PinCheck.isPinSetup(async function(success){
-    console.log("pin is setup.");
-    let new_punched_arr = [];
-    // document.getElementById("updating").style.display = "block";
-    let check_login_status = await getDbSubCollData({
-      collectionName: "attendance",
-      docId: new Date().toUTCString().slice(5, 16),
-      subCollName: window.localStorage.getItem("uid"),
-      subDocId: window.localStorage.getItem("uid"),
-    });
-
-    let status = check_login_status.data;
-    if (status != undefined) {
-      for (let i in status.punched_times) {
-        new_punched_arr.push(status.punched_times[i]);
-      }
-    }
-
-    let uid = window.localStorage.getItem("uid");
-    let ename = window.localStorage.getItem("uname");
-    let punch_in_arr = new_punched_arr;    
-    if(lat==undefined){
-      lat=" "
-    }
-    if(long==undefined){
-      long=" "
-    }
-    let punched_data = {
-      login_time: date1.toLocaleTimeString(),
-      latitude: lat,
-      tstamp: new Date().toString(),
-      longitude: long,
-    };
-    punch_in_arr.push(punched_data);
-    data = {
-      name: ename,
-      emp_id: uid,
-      punched_times: punch_in_arr,
-    };
-    data_notify = {
-      name: ename,
-      emp_id: uid,
-      data :window.localStorage.getItem("data"),
-      punched_times: punch_in_arr,
-    };
-    await db
-      .collection("attendance")
-      .doc(date)
-      .collection(uid)
-      .doc(uid)
-      .set(data)
-      .then(async function () {
-        await db
-        .collection("notify_to_mentor")
-        .doc(uid).set(data_notify).then(function(){
-          window.location = "../employee/employee.html";
-        })
-      
-      })
-      .catch(function () {
-        alert("error");
+  window.cordova.plugins.PinCheck.isPinSetup(
+    async function (success) {
+      console.log("pin is setup.");
+      let new_punched_arr = [];
+      // document.getElementById("updating").style.display = "block";
+      let check_login_status = await getDbSubCollData({
+        collectionName: "attendance",
+        docId: new Date().toUTCString().slice(5, 16),
+        subCollName: window.localStorage.getItem("uid"),
+        subDocId: window.localStorage.getItem("uid"),
       });
-  }, function(fail){
-    alert("Please setup a pin/password.");
-  });
-  
+
+      let status = check_login_status.data;
+      if (status != undefined) {
+        for (let i in status.punched_times) {
+          new_punched_arr.push(status.punched_times[i]);
+        }
+      }
+
+      let uid = window.localStorage.getItem("uid");
+      let ename = window.localStorage.getItem("uname");
+      let punch_in_arr = new_punched_arr;
+      if (lat == undefined) {
+        lat = " ";
+      }
+      if (long == undefined) {
+        long = " ";
+      }
+      let punched_data = {
+        login_time: date1.toLocaleTimeString(),
+        latitude: lat,
+        tstamp: new Date().toString(),
+        longitude: long,
+      };
+      punch_in_arr.push(punched_data);
+      data = {
+        name: ename,
+        emp_id: uid,
+        punched_times: punch_in_arr,
+      };
+      data_notify = {
+        name: ename,
+        emp_id: uid,
+        data: window.localStorage.getItem("data"),
+        punched_times: punch_in_arr,
+      };
+      await db
+        .collection("attendance")
+        .doc(date)
+        .collection(uid)
+        .doc(uid)
+        .set(data)
+        .then(async function () {
+          await db
+            .collection("notify_to_mentor")
+            .doc(uid)
+            .set(data_notify)
+            .then(function () {
+              window.location = "../employee/employee.html";
+            });
+        })
+        .catch(function () {
+          alert("error");
+        });
+    },
+    function (fail) {
+      alert("Please setup a pin/password.");
+    }
+  );
 }
 
 //  Fingerprint verification; if you need to add a diploma, you need to pass the ClientID, UseName, Password.
@@ -476,12 +648,12 @@ async function encryptSuccessCallback(result) {
 
     let uid = window.localStorage.getItem("uid");
     let ename = window.localStorage.getItem("uname");
-    let punch_in_arr = new_punched_arr;    
-    if(lat==undefined){
-      lat=" "
+    let punch_in_arr = new_punched_arr;
+    if (lat == undefined) {
+      lat = " ";
     }
-    if(long==undefined){
-      long=" "
+    if (long == undefined) {
+      long = " ";
     }
     let punched_data = {
       login_time: date1.toLocaleTimeString(),
@@ -498,7 +670,7 @@ async function encryptSuccessCallback(result) {
     data_notify = {
       name: ename,
       emp_id: uid,
-      data :window.localStorage.getItem("data"),
+      data: window.localStorage.getItem("data"),
       punched_times: punch_in_arr,
     };
     await db
@@ -509,11 +681,12 @@ async function encryptSuccessCallback(result) {
       .set(data)
       .then(async function () {
         await db
-        .collection("notify_to_mentor")
-        .doc(uid).set(data_notify).then(function(){
-          window.location = "../employee/employee.html";
-        })
-      
+          .collection("notify_to_mentor")
+          .doc(uid)
+          .set(data_notify)
+          .then(function () {
+            window.location = "../employee/employee.html";
+          });
       })
       .catch(function () {
         alert("error");
@@ -523,11 +696,11 @@ async function encryptSuccessCallback(result) {
     let uid = window.localStorage.getItem("uid");
     let ename = window.localStorage.getItem("uname");
     let punch_in_arr = [];
-    if(lat==undefined){
-      lat=" "
+    if (lat == undefined) {
+      lat = " ";
     }
-    if(long==undefined){
-      long=" "
+    if (long == undefined) {
+      long = " ";
     }
     let punched_data = {
       login_time: date1.toLocaleTimeString(),
@@ -544,7 +717,7 @@ async function encryptSuccessCallback(result) {
     let data_notify = {
       name: ename,
       emp_id: uid,
-      data :window.localStorage.getItem("data"),
+      data: window.localStorage.getItem("data"),
       punched_times: punch_in_arr,
     };
     await db
@@ -555,14 +728,14 @@ async function encryptSuccessCallback(result) {
       .set(data)
       .then(async function () {
         await db
-        .collection("notify_to_mentor")
-        .doc(uid).set(data_notify).then(function(){
-          window.location = "../employee/employee.html";
-        })
-      
+          .collection("notify_to_mentor")
+          .doc(uid)
+          .set(data_notify)
+          .then(function () {
+            window.location = "../employee/employee.html";
+          });
       })
       .catch(function (error) {
-
         console.log(error);
       });
   }
@@ -587,8 +760,8 @@ function authenticateLogOff() {
   projects = [];
   let counter = 0;
   if (window.localStorage.getItem("working_time") >= 0) {
-    var hours = Math.floor(window.localStorage.getItem("working_time") / 60);
-    var minutes = window.localStorage.getItem("working_time") % 60;
+    // var hours = Math.floor(window.localStorage.getItem("working_time") / 60);
+    // var minutes = window.localStorage.getItem("working_time") % 60;
     total_Work_hour = hours;
     if (minutes >= 30) {
       total_Work_hour += 1;
@@ -659,8 +832,7 @@ function isAvailableSuccessCallbackLogOff(result) {
 }
 function isAvailableErrorLogOff(message) {
   console.log("isAvailableError(): " + message);
-  loggoff()
-
+  loggoff();
 }
 
 //  Fingerprint verification; if you need to add a diploma, you need to pass the ClientID, UseName, Password.

@@ -63,6 +63,7 @@
     "@material/drawer": "^13.0.0",
     "cordova": "^11.0.0",
     "cordova-plugin-firebase-inappmessaging": "5.0.0",
-    "node-geocoder": "^3.28.0"
+    "node-geocoder": "^3.28.0",
+    "timepicker-ui": "^2.5.0"
   }
 }

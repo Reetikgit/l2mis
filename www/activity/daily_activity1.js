@@ -3,6 +3,9 @@ var global_data;
 var interval;
 let counter = 0;
 let int_counter = 0;
+let global_login_time;
+let global_Day;
+
 async function getActivity() {
   let month = new Date().toString().split(" ")[1];
   let year = new Date().toString().split(" ")[3];
@@ -10,24 +13,56 @@ async function getActivity() {
   let local_arr = [];
   let local_dates = [];
   let index = 0;
+  let color = "primary";
   let display_type = "none";
+  document.getElementById("month_name").innerHTML = month;
   showData();
   function showData() {
+    let todays_date = new Date()
+      .toString()
+      .split(/\s/)
+      .join("")
+      .split(":")[0]
+      .slice(0, -2);
     let stored_Data = JSON.parse(window.localStorage.getItem("activity"));
     if (stored_Data) {
-      document.getElementById("activitys").innerHTML = "";
+      document.getElementById("activitys_backup").innerHTML = "";
       for (let i in stored_Data) {
         let val = stored_Data[i];
         let total_Work_hour = 0;
         let day = val.punched_times[0].tstamp.split(" ")[2];
+        
         let tstamp = val.punched_times[val.punched_times.length - 1].tstamp;
         for (let k in val.punched_times) {
-          total_Work_hour += val.punched_times[k].total_Work_hour;
+          if (stored_Data.status && stored_Data.status == "adjusted") {
+            display_type = "block";
+          }
+          if (
+            tstamp.split(":")[0].slice(0, -2).split(/\s/).join("") !=
+            todays_date
+          ) {
+            color = "danger";
+           
+          }
+          if (
+            tstamp.split(":")[0].slice(0, -2).split(/\s/).join("") ==
+            todays_date
+          ) {
+            color = "primary";
+          }
+          if (val.punched_times[k].total_Work_hour) {
+            total_Work_hour += val.punched_times[k].total_Work_hour;
+            
+            color = "primary";
+          } else {
+            total_Work_hour = "N.A";
+          }
         }
-        if (stored_Data.status && stored_Data.status == "adjusted") {
-          display_type = "block";
+        if(total_Work_hour!="N.A"){
+          total_Work_hour+=" hr"
         }
-        document.getElementById("activitys").innerHTML +=
+
+        document.getElementById("activitys_backup").innerHTML +=
           `
           <div class="list-item " data-id="19">
           <div>
@@ -44,7 +79,7 @@ async function getActivity() {
             <div class="item-except text-muted text-sm " style="font-size:11px">
               Total Work Hour : ` +
           total_Work_hour +
-          `
+          ` 
             </div>
             <div class="item-except text-muted text-sm " style="font-size:11px">
               Total Punch : ` +
@@ -57,9 +92,11 @@ async function getActivity() {
             <div
               class="item-date text-muted text-sm d-md-block"
             >
-              <button class="btn btn-primary" style="font-size:10px;margin-left:55%;color:green;" onclick=showAdjustDialog("` +
+              <button class="btn btn-` +
+          color +
+          `" style="font-size:10px;margin-left:55%;color:white;" onclick=showAdjustDialog("` +
           tstamp.split(/\s/).join("") +
-          `")>View</button>
+          `","`+tstamp.split(/\s/).join("*")+`")>View</button>
             </div>
           </div>
         </div>
@@ -68,9 +105,12 @@ async function getActivity() {
         document.getElementById("loading").style.display = "none";
       }
     }
+    document.getElementById("activitys").innerHTML =
+      document.getElementById("activitys_backup").innerHTML;
   }
-
+  let database_counter = 31;
   for (let day = 1; day <= 31; day++) {
+    database_counter--;
     if (day < 10) {
       day = "0" + day;
     }
@@ -82,11 +122,9 @@ async function getActivity() {
       .collection(id)
       .doc(id)
       .get();
-
-    if (
-      res.data() &&
-      res.data().punched_times[res.data().punched_times.length - 1].logout_time
-    ) {
+    document.getElementById("counters").innerHTML =
+      "Refreshing in " + database_counter + "";
+    if (res.data()) {
       let tstamp =
         res.data().punched_times[res.data().punched_times.length - 1].tstamp;
       counter = 1;
@@ -102,15 +140,15 @@ async function getActivity() {
       if (res.data().status && res.data().status == "adjusted") {
         display_type = "block";
       }
-
-      showData();
     }
 
     //}
   }
+  showData();
+  document.getElementById("counters").innerHTML = "";
   if (counter == 0) {
     document.getElementById("loading").style.display = "none";
-    document.getElementById("activitys").innerHTML =
+    document.getElementById("activitys_backup").innerHTML =
       "No activity found ! Use daily signin to create a activity . ";
   }
 }
@@ -120,7 +158,18 @@ setTimeout(function () {
 }, 200);
 var tot_hour_ = 0;
 var global_date;
-async function showAdjustDialog(tstamp) {
+async function showAdjustDialog(tstamp,tstamp_2) {
+  global_Day=tstamp_2;
+  document.getElementById("add_button").innerHTML = `
+  <button
+          type="button"
+          class="btn btn-danger"
+          data-mdb-dismiss="modal"
+          onclick="closeDialog()"
+        >
+          Close
+        </button>
+  `;
   idss = [];
   let data = JSON.parse(window.localStorage.getItem("activity"));
   for (let i in data) {
@@ -135,7 +184,7 @@ async function showAdjustDialog(tstamp) {
       for (let k in global_data.punched_times) {
         let val = global_data;
         let log_out_time;
-
+        let login_tstamp= val.punched_times[k].tstamp;
         let login_time = val.punched_times[k].tstamp.split(" ")[4];
         let tot_work_hour = val.punched_times[k].total_Work_hour;
 
@@ -167,7 +216,7 @@ async function showAdjustDialog(tstamp) {
       <h6>Login-Time :` +
           login_time +
           `</h6>
-      <h6>Logout-Time :` +
+      <h6 >Logout-Time :` +
           log_out_time +
           `</h6>
       <h6>Total Time spent :` +
@@ -183,8 +232,32 @@ async function showAdjustDialog(tstamp) {
          <hr/>
 
       </div>`;
-
+     
+        if (log_out_time == "Active") {
+          document.getElementById("add_button").innerHTML +=
+            `
+                <button
+                type="button"
+                class="btn btn-secondary"
+                data-mdb-dismiss="modal"
+                onclick=old_punch_out_func("` +
+            tstamp +
+            `","`+login_time+`")
+              >
+                Punch Out
+              </button>
+        `;
+        }
+        let todays = new Date()
+        .toString()
+        .split(/\s/)
+        .join("")
+        .split(":")[0]
+        .slice(0, -2);
+      
+   
         $("#dialog_adjust").modal("show");
+
         var coll = document.getElementsByClassName("collapsible");
         var j;
 
@@ -202,6 +275,68 @@ async function showAdjustDialog(tstamp) {
       }
     }
   }
+}
+async function getStatus() {
+  let check_login_status = await getDbSubCollData({
+    collectionName: "attendance",
+    docId: new Date().toUTCString().slice(5, 16),
+    subCollName: window.localStorage.getItem("uid"),
+    subDocId: window.localStorage.getItem("uid"),
+  });
+}
+function old_punch_out_func(tstamp,login_time) {
+  global_login_time=login_time
+  let todays = new Date()
+    .toString()
+    .split(/\s/)
+    .join("")
+    .split(":")[0]
+    .slice(0, -2);
+  console.log(tstamp + "--" + todays);
+  if (tstamp.split(":")[0].slice(0, -2) == todays) {
+    //Today's Punch Out
+    $("#dialog_adjust").modal("hide");
+    displayDialog();
+  } else {
+    //Previous day punch out
+    $("#dialog_adjust").modal("hide");
+    document.getElementById("dialog_logout_time_header").innerHTML="Choose Logout Time"
+    document.getElementById("dialog_logout_message").innerHTML=`
+    <div
+    class="wrap-input100 validate-input"
+    data-validate=""
+  >
+    <span class="label-input100">Select Logout Time</span>
+    <input
+      class="input100"
+      type="time"
+     
+      id="logout_times"
+      placeholder="Logout time"
+      required
+    />
+
+    <span class="focus-input100 fas fa-business-time" style="margin: 3%;color: green;"></span>
+  </div>
+    `
+    $("#dialog_logout_time").modal("show");
+ 
+    
+  }
+}
+function goToPunchOut(){
+  
+  let day1= global_Day.split("*")[2]+" "+global_Day.split("*")[1]+" "+global_Day.split("*")[3]
+  
+  let logout_time=document.getElementById("logout_times").value
+  if(parseInt(logout_time.split(":")[0])-parseInt(global_login_time.split(":")[0])>0){
+    $("#dialog_logout_time").modal("hide");
+    displayDialog(global_login_time,logout_time,day1);
+  }else{
+    alert("Invalid Logout Time")
+    
+  }
+ 
 }
 // async function adjust() {
 //   let date =global_date

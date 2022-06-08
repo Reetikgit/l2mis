@@ -105,10 +105,18 @@
       <div class="modal-header">
         <h5 class="modal-title" id="dialog_cnf-label">Event</h5>
       </div>
-      <div class="modal-body" id="dialog_cnf-message" style="font-weight: 600;color: black;">Message</div>
+      <div
+        class="modal-body"
+        id="dialog_cnf-message"
+        style="font-weight: 600; color: black"
+      >
+        Message
+      </div>
 
       <div class="modal-footer">
-        <span id="error_msg" style="color:red;font-weight:700;display:none">Invalid distribution of hours</span>
+        <span id="error_msg" style="color: red; font-weight: 700; display: none"
+          >Invalid distribution of hours</span
+        >
         <button
           type="button"
           class="btn btn-secondary"
@@ -142,9 +150,15 @@
       <div class="modal-header">
         <h5 class="modal-title" id="dialog_adjust-label">Event</h5>
       </div>
-      <div class="modal-body" id="dialog_adjust-message" style="font-weight: 600;color: black;">Message</div>
+      <div
+        class="modal-body"
+        id="dialog_adjust-message"
+        style="font-weight: 600; color: black"
+      >
+        Message
+      </div>
 
-      <div class="modal-footer">
+      <div class="modal-footer" id="add_button">
         <!-- <button
           type="button"
           class="btn btn-warning"
@@ -152,14 +166,6 @@
         >
           Adjust
         </button> -->
-        <button
-          type="button"
-          class="btn btn-danger"
-          data-mdb-dismiss="modal"
-          onclick="closeDialog()"
-        >
-          Close
-        </button>
       </div>
     </div>
   </div>
@@ -207,6 +213,46 @@
   <loader></loader>
 </div>
 
+<div
+  class="modal fade"
+  id="dialog_logout_time"
+  data-mdb-backdrop="static"
+  data-mdb-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="staticBackdropLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="dialog_logout_time_header">Event</h5>
+      </div>
+      <div
+        class="modal-body"
+        id="dialog_logout_message"
+        style="font-weight: 400; color: black"
+      ></div>
+
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-mdb-dismiss="modal"
+          onclick="closeDialog()"
+        >
+          Close
+        </button>
+        <button
+        type="button"
+        class="btn btn-secondary"
+        onclick="goToPunchOut()"
+        >
+          Punch Out
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 <!-- use these functions in javascript file for default android based notifications -->
 
 <!-- function alertDismissed() {
@@ -218,4 +264,4 @@ navigator.notification.alert(
   alertDismissed,         // callback
   'Game Over',            // title
   'Done'                  // buttonName
-); -->
+);  -->
